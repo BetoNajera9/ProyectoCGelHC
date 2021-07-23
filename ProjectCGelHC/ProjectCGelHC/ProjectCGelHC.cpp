@@ -48,6 +48,7 @@ Model Mijitorio;
 Model Silla;
 Model Tornamesa;
 Model WC;
+Model Estacionamiento;
 
 Skybox skybox;
 
@@ -212,6 +213,8 @@ int main()
 	Tornamesa.LoadModel("Models/Torna.obj");
 	WC = Model();
 	WC.LoadModel("Models/WC.obj");
+	Estacionamiento = Model();
+	Estacionamiento.LoadModel("Models/Estacionamiento.fbx");
 	
 
 	std::vector<std::string> skyboxFaces;
@@ -891,6 +894,21 @@ int main()
 		model = glm::rotate(model, 50 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
+
+
+
+//***************************** Estacinamiento ***********************************
+
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(70.0f, 20.0f, -60.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		model = glm::rotate(model, 270 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Estacionamiento.RenderModel();
 
 
 
