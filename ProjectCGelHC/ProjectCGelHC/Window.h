@@ -13,7 +13,19 @@ public:
 	GLfloat getBufferHeight() { return bufferHeight; }
 	GLfloat getXChange();
 	GLfloat getYChange();
-	GLfloat getmuevex() { return muevex; }
+
+	/*****Jhon*****/
+	GLfloat getMoveJhonX() { return MoveJhonX; }
+	GLfloat getMoveJhonY() { return MoveJhonY; }
+	GLfloat getMoveJhonZ() { return MoveJhonZ; }
+
+	GLfloat getRotateJhonX() { return RotateJhonX; }
+	GLfloat getRotateJhonY() { return RotateJhonY; }
+	GLfloat getRotateJhonZ() { return RotateJhonZ; }
+
+	GLboolean getWalking() { return Walking; }
+	/*************/
+
 	bool getShouldClose() {
 		return  glfwWindowShouldClose(mainWindow);}
 	bool* getsKeys() { return keys; }
@@ -30,7 +42,15 @@ private:
 	GLfloat lastY;
 	GLfloat xChange;
 	GLfloat yChange;
-	GLfloat muevex;
+	/*****Jhon*****/
+	GLboolean Walking;
+	GLfloat MoveJhonX;
+	GLfloat MoveJhonY;
+	GLfloat MoveJhonZ;
+	GLfloat RotateJhonX;
+	GLfloat RotateJhonY;
+	GLfloat RotateJhonZ;
+	/***************/
 	bool mouseFirstMoved;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);
 	static void ManejaMouse(GLFWwindow* window, double xPos, double yPos);

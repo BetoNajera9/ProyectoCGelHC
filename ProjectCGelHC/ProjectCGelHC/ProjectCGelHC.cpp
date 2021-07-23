@@ -49,6 +49,21 @@ Model Silla;
 Model Tornamesa;
 Model WC;
 
+//Personas
+Model JhonBrazoDer;
+Model JhonBrazoIzq;
+Model JhonPiernaDer;
+Model JhonPiernaIzq;
+Model JhonTorzo;
+
+// Varibles Jhon
+bool Front = true;
+bool Stopped = true;
+float rotateJhonArmR;
+float rotateJhonArmL;
+float rotateJhonLegR;
+float rotateJhonLegL;
+
 Skybox skybox;
 
 GLfloat deltaTime = 0.0f;
@@ -197,7 +212,7 @@ int main()
 	Corona = Model();
 	Corona.LoadModel("Models/Corona.obj");
 	Laptop = Model();
-	Laptop.LoadModel("Models/laptop.obj");
+	Laptop.LoadModel("Models/Laptop.obj");
 	Lavabo = Model();
 	Lavabo.LoadModel("Models/Lavabo.obj");
 	Mesa = Model();
@@ -213,6 +228,18 @@ int main()
 	WC = Model();
 	WC.LoadModel("Models/WC.obj");
 	
+
+	//Personas
+	JhonBrazoDer = Model();
+	JhonBrazoDer.LoadModel("Models/Jhon/JhonBrazoDer.fbx");
+	JhonBrazoIzq = Model();
+	JhonBrazoIzq.LoadModel("Models/Jhon/JhonBrazoIzq.fbx");
+	JhonPiernaDer = Model();
+	JhonPiernaDer.LoadModel("Models/Jhon/JhonPiernaDer.fbx");
+	JhonPiernaIzq = Model();
+	JhonPiernaIzq.LoadModel("Models/Jhon/JhonPiernaIzq.fbx");
+	JhonTorzo = Model();
+	JhonTorzo.LoadModel("Models/Jhon/JhonTorzo.fbx");
 
 	std::vector<std::string> skyboxFaces;
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_rt.tga");
@@ -263,11 +290,116 @@ int main()
 		pisoTexture.UseTexture();
 		meshList[2]->RenderMesh();
 
-		model = glm::mat4(1.0);
+		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Bar.RenderModel();
+		Bar.RenderModel();*/
+
+		/**********************Jhon**********************/
+		if (mainWindow.getWalking() == GL_TRUE) {
+			if (Front == true) {
+				rotateJhonArmR += 0.5;
+				rotateJhonArmL -= 0.5;
+				if (rotateJhonArmR == -45) {
+					Front = false;
+				}
+			}
+			else if (Front == false) {
+				rotateJhonArmR -= 0.5;
+				rotateJhonArmL += 0.5;
+				if (rotateJhonArmR == 45) {
+					Front = true;
+				}
+			}
+		}
+		else {
+			if (Stopped == false && rotateJhonArmR > 0) {
+				rotateJhonArmR -= 0.5;
+				rotateJhonArmL += 0.5;
+			}
+			if (Stopped == false && rotateJhonArmR < 0) {
+				rotateJhonArmR += 0.5;
+				rotateJhonArmL -= 0.5;
+			}
+		}
+		
+		model = glm::mat4(1.0);
+		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-0.35f + mainWindow.getMoveJhonX(), 0.3f, -0.05f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, 25 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, rotateJhonArmR * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		JhonBrazoDer.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.35f + mainWindow.getMoveJhonX(), 0.3f, -0.05f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, -25 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, rotateJhonArmL * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		JhonBrazoIzq.RenderModel();
+
+		if (mainWindow.getWalking() == GL_TRUE) {
+			if (Front == true) {
+				rotateJhonLegR -= 0.5;
+				rotateJhonLegL += 0.5;
+				if (rotateJhonLegR == -45) {
+					Front = false;
+				}
+			}
+			else if (Front == false) {
+				rotateJhonLegR += 0.5;
+				rotateJhonLegL -= 0.5;
+				if (rotateJhonLegR == 45) {
+					Front = true;
+				}
+			}
+		}
+		else {
+			if (rotateJhonLegR == 0) {
+				Stopped = true;
+			}
+			else {
+				Stopped = false;
+			}
+
+			if (Stopped == false && rotateJhonLegR > 0) {
+				rotateJhonLegR -= 0.5;
+				rotateJhonLegL += 0.5;
+			}
+			if (Stopped == false && rotateJhonLegR < 0) {
+				rotateJhonLegR += 0.5;
+				rotateJhonLegL -= 0.5;
+			}
+		}
+		
+		model = glm::mat4(1.0);
+		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), -0.8f, 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, rotateJhonLegR * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.6f, 1.5f, 1.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		JhonPiernaDer.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), -0.8f, 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, rotateJhonLegL * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		JhonPiernaIzq.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), -2.0f, 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		JhonTorzo.RenderModel();
+
+
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(50.0f, 0.0f, 0.0f));
@@ -296,7 +428,7 @@ int main()
 		Lavabo.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(5.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 
@@ -324,6 +456,9 @@ int main()
 		model = glm::translate(model, glm::vec3(40.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		WC.RenderModel();
+
+		//Personas
+
 
 		glUseProgram(0);
 
