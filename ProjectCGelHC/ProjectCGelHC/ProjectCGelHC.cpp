@@ -54,6 +54,11 @@ Model Silla;
 Model Tornamesa;
 Model WC;
 Model Estacionamiento;
+Model Auto;
+Model Auto2;
+Model Auto3;
+Model Mueble;
+Model Llanta_M;
 
 //Personas
 Model JhonBrazoDer;
@@ -72,6 +77,7 @@ float rotateJhonLegL;
 
 Skybox skybox;
 
+<<<<<<< HEAD
 //materiales
 Material Material_brillante;
 Material Material_opaco;
@@ -80,6 +86,10 @@ Material Material_opaco;
 DirectionalLight mainLight;
 //para declarar varias luces de tipo pointlight
 PointLight pointLights[10];
+=======
+//Declarando variable de luces
+DirectionalLight mainLight;
+>>>>>>> CargaModelos
 SpotLight spotLights[10];
 
 GLfloat deltaTime = 0.0f;
@@ -218,6 +228,8 @@ int main()
 	pisoTexture.LoadTextureA();
 
 	// Models
+	Llanta_M = Model();
+	Llanta_M.LoadModel("Models/k_rueda.3ds");
 	Bar = Model();
 	Bar.LoadModel("Models/Bar.fbx");
 	Barra = Model();
@@ -244,6 +256,14 @@ int main()
 	WC.LoadModel("Models/WC.obj");
 	Estacionamiento = Model();
 	Estacionamiento.LoadModel("Models/Estacionamiento.fbx");
+	Auto = Model();
+	Auto.LoadModel("Models/Auto.obj");
+	Auto2 = Model();
+	Auto2.LoadModel("Models/BMW.obj");
+	Auto3 = Model();
+	Auto3.LoadModel("Models/AutoBeto.obj");
+	Mueble = Model();
+	Mueble.LoadModel("Models/Mueble.obj");
 	
 
 	//Personas
@@ -268,6 +288,7 @@ int main()
 
 	skybox = Skybox(skyboxFaces);
 
+<<<<<<< HEAD
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
@@ -294,11 +315,33 @@ int main()
 		1.0f, 0.0f, 0.0f,
 		15.0f);
 	spotLightCount++;
+=======
+
+	//mainLight = DirectionalLight(0.0f, 1.0f, 0.0f,
+	//	0.3f, 0.3f,
+	//	0.0f, 0.0f, -1.0f);
+
+	//Luces
+	//unsigned int spotLightsCount = 0;
+
+	//spotLights[0] = SpotLight(0.0f, 1.0f, 0.0f,
+	//	1.0f, 2.0f,
+	//	5.0f, 10.0f, 8.0f,
+	//	0.0, -5.0f, 0.0f,
+	//	1.0f, 0.0f, 0.0f,
+	//	15.0f);
+	//spotLightsCount++;
+>>>>>>> CargaModelos
 
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
 		uniformSpecularIntensity = 0, uniformShininess = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
+
+
+
+
+
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
@@ -330,10 +373,16 @@ int main()
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
+<<<<<<< HEAD
 
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
+=======
+		spotLights[0].SetPos(glm::vec3(0.0f, 0.0f, 0.0f));
+
+
+>>>>>>> CargaModelos
 
 		glm::mat4 model(1.0);
 
@@ -635,6 +684,200 @@ int main()
 
 		//****************************   PRIMER PISO   *********************************
 
+		//Mueble
+		model = glm::mat4(1.0);
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		model = glm::translate(model, glm::vec3(20.0f, 7.0f, 1.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Mueble.RenderModel();
+
+		//Botellas en el mueble.
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(22.5f, 17.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.9f, 17.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.3f, 17.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.7f, 17.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+
+
+
+
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(22.5f, 17.5f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.9f, 17.5f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.3f, 17.5f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.7f, 17.5f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(22.5f, 18.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.9f, 18.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.3f, 18.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.7f, 18.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+
+
+
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(22.5f, 18.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.9f, 18.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.3f, 18.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.7f, 18.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+
+
+
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(22.5f, 18.9f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.9f, 18.9f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.3f, 18.9f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.7f, 18.9f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+
+
+
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(22.5f, 19.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.9f, 19.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.3f, 19.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.7f, 19.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+
+
+
 		//Barra
 		model = glm::mat4(1.0);
 		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
@@ -642,6 +885,11 @@ int main()
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Barra.RenderModel();
+
+
+
+
+
 
 		//Bocina1
 		model = glm::mat4(1.0);
@@ -871,6 +1119,170 @@ int main()
 		//**************************** SEGUNDO PISO *********************************
 
 
+		//Mueble
+		model = glm::mat4(1.0);
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		model = glm::translate(model, glm::vec3(20.0f, 16.0f, 1.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Mueble.RenderModel();
+
+
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(22.5f, 10.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.9f, 10.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.3f, 10.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.7f, 10.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+
+
+
+
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(22.5f, 9.9f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.9f, 9.9f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.3f, 9.9f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.7f, 9.9f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+
+
+
+
+
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(22.5f, 9.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.9f, 9.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.3f, 9.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.7f, 9.4f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+
+
+
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(22.5f, 9.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.9f, 9.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.3f, 9.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.7f, 9.0f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+
+
+
+
+
+
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(22.5f, 8.5f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.9f, 8.5f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(21.3f, 8.5f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.7f, 8.5f, -1.1f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01, 0.01f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Corona.RenderModel();
+
+
+
 		//Barra
 		model = glm::mat4(1.0);
 		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
@@ -1094,15 +1506,65 @@ int main()
 
 
 
+        //Carro 1.
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(139.0f, 0.2f, -10.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Auto.RenderModel();
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(134.0f, 0.0f, -9.7f));
+		model = glm::scale(model, glm::vec3(0.015f, 0.015f, 0.015));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Llanta_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(134.0f, 0.0f, -15.7f));
+		model = glm::scale(model, glm::vec3(0.015f, 0.015f, 0.015f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Llanta_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(125.5f, 0.0f, -9.7f));
+		model = glm::scale(model, glm::vec3(0.015f, 0.015f, 0.015f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Llanta_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(125.5f, 0.0f, -15.7f));
+		model = glm::scale(model, glm::vec3(0.015f, 0.015f, 0.015f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Llanta_M.RenderModel();
+
+
+		//Carro 2.
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(80.5f, 0.2f, -28.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Auto2.RenderModel();
+
+
+		//Carro 3.
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(152.8f, -2.0f, -50.0f));
+		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Auto3.RenderModel();
 
 
 
 
-		//model = glm::mat4(1.0);
-		//model = glm::translate(model, glm::vec3(-20.0f, 0.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		//glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//Corona.RenderModel();
+
+
+
 
 
 
