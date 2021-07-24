@@ -13,7 +13,15 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 {
 	width = windowWidth;
 	height = windowHeight;
-	muevex = 2.0f;
+	/*****Jhon*****/
+	MoveJhonX = 0.0f;
+	MoveJhonY = 0.0f;
+	MoveJhonZ = 0.0f;
+	RotateJhonX = 0.0f;
+	RotateJhonY = 0.0f;
+	RotateJhonZ = 0.0f;
+	Walking = GL_FALSE;
+	/***************/
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
@@ -104,15 +112,48 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-	if (key == GLFW_KEY_Y)
+	/**********JHON**********/
+	//Move
+	if (key == GLFW_KEY_W)
 	{
-		theWindow-> muevex += 1.0;
+		theWindow->MoveJhonZ += 1.0;
 	}
-	if (key == GLFW_KEY_U)
+	if (key == GLFW_KEY_S)
 	{
-		theWindow-> muevex -= 1.0;
+		theWindow->MoveJhonZ -= 1.0;
 	}
-
+	if (key == GLFW_KEY_D)
+	{
+		theWindow->MoveJhonX -= 1.0;
+	}
+	if (key == GLFW_KEY_A)
+	{
+		theWindow->MoveJhonX += 1.0;
+	}
+	//Rotate
+	if (key == GLFW_KEY_UP)
+	{
+		//theWindow->RotateJhonZ += 1.0;
+	}
+	if (key == GLFW_KEY_DOWN)
+	{
+		//theWindow->RotateJhonZ -= 1.0;
+	}
+	if (key == GLFW_KEY_LEFT)
+	{
+		theWindow->RotateJhonZ += 1.0;
+	}
+	if (key == GLFW_KEY_RIGHT)
+	{
+		theWindow->RotateJhonZ -= 1.0;
+	}
+	if ((key == GLFW_KEY_W || key == GLFW_KEY_S || key == GLFW_KEY_A || key == GLFW_KEY_D) && action == GLFW_PRESS) {
+		theWindow->Walking = GL_TRUE;
+	}
+	if ((key == GLFW_KEY_W || key == GLFW_KEY_S || key == GLFW_KEY_A || key == GLFW_KEY_D) && action == GLFW_RELEASE) {
+		theWindow->Walking = GL_FALSE;
+	}
+	/****************************/
 
 
 	if (key >= 0 && key < 1024)
@@ -120,12 +161,10 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 		if (action == GLFW_PRESS)
 		{
 			theWindow->keys[key] = true;
-			printf("se presiono la tecla %d'\n", key);
 		}
 		else if (action == GLFW_RELEASE)
 		{
 			theWindow->keys[key] = false;
-			printf("se solto la tecla %d'\n", key);
 		}
 	}
 }

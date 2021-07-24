@@ -22,6 +22,11 @@
 #include "Texture.h"
 #include"Model.h"
 #include "Skybox.h"
+//para iluminación
+#include "CommonValues.h"
+#include "DirectionalLight.h"
+#include "PointLight.h"
+#include "Material.h"
 
 const float toRadians = 3.14159265f / 180.0f;
 
@@ -50,12 +55,36 @@ Model Tornamesa;
 Model WC;
 Model Estacionamiento;
 
+//Personas
+Model JhonBrazoDer;
+Model JhonBrazoIzq;
+Model JhonPiernaDer;
+Model JhonPiernaIzq;
+Model JhonTorzo;
+
+// Varibles Jhon
+bool Front = true;
+bool Stopped = true;
+float rotateJhonArmR;
+float rotateJhonArmL;
+float rotateJhonLegR;
+float rotateJhonLegL;
+
 Skybox skybox;
+
+//materiales
+Material Material_brillante;
+Material Material_opaco;
+
+// Lights
+DirectionalLight mainLight;
+//para declarar varias luces de tipo pointlight
+PointLight pointLights[10];
+SpotLight spotLights[10];
 
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
 static double limitFPS = 1.0 / 60.0;
-
 
 // Vertex Shader
 static const char* vShader = "shaders/shader_light.vert";
@@ -198,7 +227,7 @@ int main()
 	Corona = Model();
 	Corona.LoadModel("Models/Corona.obj");
 	Laptop = Model();
-	Laptop.LoadModel("Models/laptop.obj");
+	Laptop.LoadModel("Models/Laptop.obj");
 	Lavabo = Model();
 	Lavabo.LoadModel("Models/Lavabo.obj");
 	Mesa = Model();
@@ -217,6 +246,18 @@ int main()
 	Estacionamiento.LoadModel("Models/Estacionamiento.fbx");
 	
 
+	//Personas
+	JhonBrazoDer = Model();
+	JhonBrazoDer.LoadModel("Models/Jhon/JhonBrazoDer.fbx");
+	JhonBrazoIzq = Model();
+	JhonBrazoIzq.LoadModel("Models/Jhon/JhonBrazoIzq.fbx");
+	JhonPiernaDer = Model();
+	JhonPiernaDer.LoadModel("Models/Jhon/JhonPiernaDer.fbx");
+	JhonPiernaIzq = Model();
+	JhonPiernaIzq.LoadModel("Models/Jhon/JhonPiernaIzq.fbx");
+	JhonTorzo = Model();
+	JhonTorzo.LoadModel("Models/Jhon/JhonTorzo.fbx");
+
 	std::vector<std::string> skyboxFaces;
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_rt.tga");
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_lf.tga");
@@ -226,6 +267,34 @@ int main()
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_ft.tga");
 
 	skybox = Skybox(skyboxFaces);
+
+	Material_brillante = Material(4.0f, 256);
+	Material_opaco = Material(0.3f, 4);
+
+	//Lights
+	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
+		0.3f, 0.3f,
+		0.0f, 0.0f, -1.0f);
+
+	unsigned int pointLightCount = 0;
+
+	pointLights[0] = PointLight(1.0f, 0.0f, 0.0f, //Color
+		2.0f, 2.0f,//intensidad
+		0.0f, 0.0f, 8.0f,//Posicion
+		0.5f, 0.2f, 0.1f);//4(.2)^2-2*0.5*0.1
+	pointLightCount++;
+
+	unsigned int spotLightCount = 0;
+
+	spotLights[0] = SpotLight(0.0f, 0.0f, 1.0f, //color
+		1.0f, 2.0f,	//Intensidad
+		5.0f, 10.0f, 8.0f,	//posicion
+		//x     Y     Z
+		-5.0f, 0.0f, 0.0f, //direccion
+		1.0f, 0.0f, 0.0f,
+		15.0f);
+	spotLightCount++;
+
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
 		uniformSpecularIntensity = 0, uniformShininess = 0;
@@ -253,9 +322,18 @@ int main()
 		uniformView = shaderList[0].GetViewLocation();
 		uniformEyePosition = shaderList[0].GetEyePositionLocation();
 
+		//información en el shader de intensidad especular y brillo
+		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
+		uniformShininess = shaderList[0].GetShininessLocation();
+
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+
+
+		shaderList[0].SetDirectionalLight(&mainLight);
+		shaderList[0].SetPointLights(pointLights, pointLightCount);
+		shaderList[0].SetSpotLights(spotLights, spotLightCount);
 
 		glm::mat4 model(1.0);
 
@@ -266,14 +344,118 @@ int main()
 		pisoTexture.UseTexture();
 		meshList[2]->RenderMesh();
 
-
-
-
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Bar.RenderModel();
+
+		/**********************Jhon**********************/
+		if (mainWindow.getWalking() == GL_TRUE) {
+			if (Front == true) {
+				rotateJhonArmR += 0.5;
+				rotateJhonArmL -= 0.5;
+				if (rotateJhonArmR == -45) {
+					Front = false;
+				}
+			}
+			else if (Front == false) {
+				rotateJhonArmR -= 0.5;
+				rotateJhonArmL += 0.5;
+				if (rotateJhonArmR == 45) {
+					Front = true;
+				}
+			}
+		}
+		else {
+			if (Stopped == false && rotateJhonArmR > 0) {
+				rotateJhonArmR -= 0.5;
+				rotateJhonArmL += 0.5;
+			}
+			if (Stopped == false && rotateJhonArmR < 0) {
+				rotateJhonArmR += 0.5;
+				rotateJhonArmL -= 0.5;
+			}
+		}
+		
+		model = glm::mat4(1.0);
+		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-0.35f + mainWindow.getMoveJhonX(), 0.3f, -0.05f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, 25 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, rotateJhonArmR * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		JhonBrazoDer.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.35f + mainWindow.getMoveJhonX(), 0.3f, -0.05f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, -25 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, rotateJhonArmL * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		JhonBrazoIzq.RenderModel();
+
+		if (mainWindow.getWalking() == GL_TRUE) {
+			if (Front == true) {
+				rotateJhonLegR -= 0.5;
+				rotateJhonLegL += 0.5;
+				if (rotateJhonLegR == -45) {
+					Front = false;
+				}
+			}
+			else if (Front == false) {
+				rotateJhonLegR += 0.5;
+				rotateJhonLegL -= 0.5;
+				if (rotateJhonLegR == 45) {
+					Front = true;
+				}
+			}
+		}
+		else {
+			if (rotateJhonLegR == 0) {
+				Stopped = true;
+			}
+			else {
+				Stopped = false;
+			}
+
+			if (Stopped == false && rotateJhonLegR > 0) {
+				rotateJhonLegR -= 0.5;
+				rotateJhonLegL += 0.5;
+			}
+			if (Stopped == false && rotateJhonLegR < 0) {
+				rotateJhonLegR += 0.5;
+				rotateJhonLegL -= 0.5;
+			}
+		}
+		
+		model = glm::mat4(1.0);
+		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), -0.8f, 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, rotateJhonLegR * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.6f, 1.5f, 1.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		JhonPiernaDer.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), -0.8f, 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, rotateJhonLegL * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		JhonPiernaIzq.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), -2.0f, 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		JhonTorzo.RenderModel();
+
+		printf("X:%f", 0.0f + mainWindow.getMoveJhonX());
+		printf("Y:%f", -2.0f + mainWindow.getMoveJhonY());
+		printf("Z:%f\n", 0.0f + mainWindow.getMoveJhonZ());
 
 
 		//****************************  PLANTA BAJA ********************************
@@ -927,6 +1109,9 @@ int main()
 
 
 
+
+
+		//Personas
 
 
 		glUseProgram(0);
