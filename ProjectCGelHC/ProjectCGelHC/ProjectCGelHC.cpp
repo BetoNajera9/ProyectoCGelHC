@@ -77,7 +77,7 @@ float rotateJhonLegL;
 
 Skybox skybox;
 
-<<<<<<< HEAD
+
 //materiales
 Material Material_brillante;
 Material Material_opaco;
@@ -86,10 +86,7 @@ Material Material_opaco;
 DirectionalLight mainLight;
 //para declarar varias luces de tipo pointlight
 PointLight pointLights[10];
-=======
-//Declarando variable de luces
-DirectionalLight mainLight;
->>>>>>> CargaModelos
+
 SpotLight spotLights[10];
 
 GLfloat deltaTime = 0.0f;
@@ -288,7 +285,7 @@ int main()
 
 	skybox = Skybox(skyboxFaces);
 
-<<<<<<< HEAD
+
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
@@ -315,23 +312,7 @@ int main()
 		1.0f, 0.0f, 0.0f,
 		15.0f);
 	spotLightCount++;
-=======
 
-	//mainLight = DirectionalLight(0.0f, 1.0f, 0.0f,
-	//	0.3f, 0.3f,
-	//	0.0f, 0.0f, -1.0f);
-
-	//Luces
-	//unsigned int spotLightsCount = 0;
-
-	//spotLights[0] = SpotLight(0.0f, 1.0f, 0.0f,
-	//	1.0f, 2.0f,
-	//	5.0f, 10.0f, 8.0f,
-	//	0.0, -5.0f, 0.0f,
-	//	1.0f, 0.0f, 0.0f,
-	//	15.0f);
-	//spotLightsCount++;
->>>>>>> CargaModelos
 
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
@@ -373,16 +354,12 @@ int main()
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
-<<<<<<< HEAD
+
 
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
-=======
-		spotLights[0].SetPos(glm::vec3(0.0f, 0.0f, 0.0f));
 
-
->>>>>>> CargaModelos
 
 		glm::mat4 model(1.0);
 
