@@ -153,7 +153,7 @@ void Model::LoadMaterials(const aiScene * scene)
 		}
 		if (!TextureList[i])
 		{
-			TextureList[i] = new Texture("Textures/plain.png"); //textura que se aplicará a los modelos si no tienen textura o la textura no se puede cargar
+			TextureList[i] = new Texture("Textures/TexturaNegra.jpeg"); //textura que se aplicará a los modelos si no tienen textura o la textura no se puede cargar
 			TextureList[i]->LoadTextureA();
 		}
 

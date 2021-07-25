@@ -37,6 +37,11 @@ public:
 	GLboolean getWalking() { return Walking; }
 	/*************/
 
+	//////////Luces//////////
+	GLfloat getLuzBarra() { return LuzBarra; }
+	GLfloat getLuzDj() { return LuzDj; }
+	////////////////////////
+
 	bool getShouldClose() {
 		return  glfwWindowShouldClose(mainWindow);}
 	bool* getsKeys() { return keys; }
@@ -47,6 +52,7 @@ private:
 	GLFWwindow *mainWindow;
 	GLint width, height;
 	bool keys[1024];
+	//bool
 	GLint bufferWidth, bufferHeight;
 	void createCallbacks();
 	GLfloat lastX;
@@ -64,6 +70,10 @@ private:
 	GLfloat lastValueJhonX;
 	GLfloat lastValueJhonZ;
 	/***************/
+	//////////Luces//////////
+	GLboolean LuzDj;
+	GLboolean LuzBarra;
+	/////////////////////////
 	bool mouseFirstMoved;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);
 	static void ManejaMouse(GLFWwindow* window, double xPos, double yPos);

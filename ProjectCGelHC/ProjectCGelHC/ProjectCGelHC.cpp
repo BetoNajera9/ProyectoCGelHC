@@ -9,6 +9,10 @@
 #include <glew.h>
 #include <glfw3.h>
 
+//Reloj
+#include <iostream>
+#include <chrono>
+
 #include <glm.hpp>
 #include <gtc\matrix_transform.hpp>
 #include <gtc\type_ptr.hpp>
@@ -27,6 +31,8 @@
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "Material.h"
+
+
 
 const float toRadians = 3.14159265f / 180.0f;
 
@@ -80,6 +86,10 @@ float JhonX = 0.0f;
 float JhonY = 0.0f;
 float JhonZ = 0.0f;
 float pisoJhon = 0;
+
+//Tiempo
+float timeStart, timeEnd;
+bool Dia = true;
 
 Skybox skybox;
 
@@ -228,9 +238,9 @@ int main()
 	CreateObjects();
 	CreateShaders();
 
-	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.5f, 0.4f);
+	camera = Camera(glm::vec3(-3.6f, 10.0f, 1.52f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.5f, 0.4f);
 
-	pisoTexture = Texture("Textures/piso.tga");
+	pisoTexture = Texture("Textures/piso.jpg");
 	pisoTexture.LoadTextureA();
 
 	// Models
@@ -287,15 +297,23 @@ int main()
 	JhonTorzo = Model();
 	JhonTorzo.LoadModel("Models/Jhon/JhonTorzo.fbx");
 
-	std::vector<std::string> skyboxFaces;
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_rt.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_lf.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_dn.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_bk.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_ft.tga");
+	std::vector<std::string> skyboxFacesNight;
+	skyboxFacesNight.push_back("Textures/Skybox/NightCityR.jpg");
+	skyboxFacesNight.push_back("Textures/Skybox/NightCityL.jpg");
+	skyboxFacesNight.push_back("Textures/Skybox/NightCityD.jpg");
+	skyboxFacesNight.push_back("Textures/Skybox/NightCityU.jpg");
+	skyboxFacesNight.push_back("Textures/Skybox/NightCityF.jpg");
+	skyboxFacesNight.push_back("Textures/Skybox/NightCityB.jpg");
 
-	skybox = Skybox(skyboxFaces);
+	std::vector<std::string> skyboxFacesDay;
+	skyboxFacesDay.push_back("Textures/Skybox/DayCityR.jpg");
+	skyboxFacesDay.push_back("Textures/Skybox/DayCityL.jpg");
+	skyboxFacesDay.push_back("Textures/Skybox/NightCityD.jpg");
+	skyboxFacesDay.push_back("Textures/Skybox/DayCityU.jpg");
+	skyboxFacesDay.push_back("Textures/Skybox/DayCityF.jpg");
+	skyboxFacesDay.push_back("Textures/Skybox/DayCityB.jpg");
+
+	skybox = Skybox(skyboxFacesDay);
 
 
 	Material_brillante = Material(4.0f, 256);
@@ -337,103 +355,134 @@ int main()
 	spotLightCount++;
 
 
-	////Luz blanca
+////Luz blanca
 
-	spotLights[1] = SpotLight(1.0f, 1.0f, 1.0f, //color
-		0.8f, 0.8f,	//Intensidad
-		22.8f, 4.0f, -16.7f,	//posicion
-		//x     Y     Z
-		0.0f, -5.0f, 0.0f, //direccion
-		1.0f, 0.0f, 0.0f,
-		85.0f);
-	spotLightCount++;
-
-
-
-	//Luz Rosa
-	spotLights[2] = SpotLight(1.0f, 0.0f, 1.0f, //color
-		0.8f, 0.8f,	//Intensidad
-		7.4f, 4.0f, -16.7f,	//posicion
-		//x     Y     Z
-		0.0f, -5.0f, 0.0f, //direccion
-		1.0f, 0.0f, 0.0f,
-		85.0f);
-	spotLightCount++;
-
-	//Luz Mesa Dj
-	spotLights[3] = SpotLight(0.0f, 0.0f, 1.0f, //color
-		1.0f, 2.0f,	//Intensidad
-		41.5f, 110.0f, -15.8f,	//posicion
-		//x     Y     Z
-		0.0f, -5.0f, 0.0f, //direccion
-		1.0f, 0.0f, 0.0f,
-		2.0f);
-	spotLightCount++;
+spotLights[1] = SpotLight(1.0f, 1.0f, 1.0f, //color
+	0.8f, 0.8f,	//Intensidad
+	22.8f, 4.0f, -16.7f,	//posicion
+	//x     Y     Z
+	0.0f, -5.0f, 0.0f, //direccion
+	1.0f, 0.0f, 0.0f,
+	85.0f);
+spotLightCount++;
 
 
 
-	//Luz Estacionamientos
-	spotLights[4] = SpotLight(1.0f, 1.0f, 1.0f, //color
-		0.5f, 0.5f,	//Intensidad
-		111.5f, 110.0f, -24.5f,	//posicion
-		//x     Y     Z
-		0.0f, -5.0f, 0.0f, //direccion
-		1.0f, 0.0f, 0.0f,
-		18.0f);
-	spotLightCount++;
+//Luz Rosa
+spotLights[2] = SpotLight(1.0f, 0.0f, 1.0f, //color
+	0.8f, 0.8f,	//Intensidad
+	7.4f, 4.0f, -16.7f,	//posicion
+	//x     Y     Z
+	0.0f, -5.0f, 0.0f, //direccion
+	1.0f, 0.0f, 0.0f,
+	85.0f);
+spotLightCount++;
+
+//Luz Mesa Dj
+spotLights[3] = SpotLight(0.0f, 0.0f, 1.0f, //color
+	1.0f, 2.0f,	//Intensidad
+	41.5f, 110.0f, -15.8f,	//posicion
+	//x     Y     Z
+	0.0f, -5.0f, 0.0f, //direccion
+	1.0f, 0.0f, 0.0f,
+	2.0f);
+spotLightCount++;
 
 
+
+//Luz Estacionamientos
+spotLights[4] = SpotLight(1.0f, 1.0f, 1.0f, //color
+	0.5f, 0.5f,	//Intensidad
+	111.5f, 110.0f, -24.5f,	//posicion
+	//x     Y     Z
+	0.0f, -5.0f, 0.0f, //direccion
+	1.0f, 0.0f, 0.0f,
+	18.0f);
+spotLightCount++;
 
 
 
 
 
 
-	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
-		uniformSpecularIntensity = 0, uniformShininess = 0;
-	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
+
+
+GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
+uniformSpecularIntensity = 0, uniformShininess = 0;
+glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
 
 
 
 
+timeStart = clock();
 
-	////Loop mientras no se cierra la ventana
-	while (!mainWindow.getShouldClose())
-	{
-		GLfloat now = glfwGetTime();
-		deltaTime = now - lastTime;
-		deltaTime += (now - lastTime) / limitFPS;
-		lastTime = now;
+////Loop mientras no se cierra la ventana
+while (!mainWindow.getShouldClose())
+{
+	GLfloat now = glfwGetTime();
+	deltaTime = now - lastTime;
+	deltaTime += (now - lastTime) / limitFPS;
+	lastTime = now;
 
-		//Recibir eventos del usuario
-		glfwPollEvents();
-		camera.keyControl(mainWindow.getsKeys(), deltaTime);
-		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+	//Recibir eventos del usuario
+	glfwPollEvents();
+	camera.keyControl(mainWindow.getsKeys(), deltaTime);
+	camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 
-		// Clear the window
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
-		shaderList[0].UseShader();
-		uniformModel = shaderList[0].GetModelLocation();
-		uniformProjection = shaderList[0].GetProjectionLocation();
-		uniformView = shaderList[0].GetViewLocation();
-		uniformEyePosition = shaderList[0].GetEyePositionLocation();
+	// Clear the window
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
+	shaderList[0].UseShader();
+	uniformModel = shaderList[0].GetModelLocation();
+	uniformProjection = shaderList[0].GetProjectionLocation();
+	uniformView = shaderList[0].GetViewLocation();
+	uniformEyePosition = shaderList[0].GetEyePositionLocation();
 
-		//información en el shader de intensidad especular y brillo
-		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
-		uniformShininess = shaderList[0].GetShininessLocation();
+	//información en el shader de intensidad especular y brillo
+	uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
+	uniformShininess = shaderList[0].GetShininessLocation();
 
-		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
-		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
-		//movimiento de luces
+	glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+	glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
+	glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+	/*===================Camara======================*/
+	//printf("x:%f, y:%f, z:%f//", camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+	//printf("//Direccionx:%f, y:%f, z:%f\n", camera.getCameraDirection().x, camera.getCameraDirection().y, camera.getCameraDirection().z);
+	/*===================+++++======================*/
 
-	/*	spotLights[0].SetPos(glm::vec3(1.0f, 0.0f, 50.0f)); */
+	/******************Tiempo******************/
+	timeEnd = clock();
+	if ( ((float)timeEnd - timeStart) / CLOCKS_PER_SEC > 60 ){
+		if (Dia == true) {
+			Dia = false;
+		}
+		else if(Dia == false) {
+			Dia = true;
+		}
+		timeStart = clock();
+	}
+	
+	if (Dia == true) {
+		mainLight.SetIntensity(0.8);
+		skybox = Skybox(skyboxFacesDay);
+	}
+	else if (Dia == false) {
+		mainLight.SetIntensity(0.05);
+		skybox = Skybox(skyboxFacesNight);
+	}
 
-		//Espectaculo de luces//
-		//Movimiwnto
-		i -= 0.1;
+	//Espectaculo de luces//
+	//Movimiento
+	if (Dia == true) {
+		pointLights[0].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+		pointLights[1].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+		spotLights[1].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+		spotLights[2].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+		spotLights[4].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	}
+	else if (Dia == false) {
+		i -= 0.01;
 		posXpink = 8 * cos(i);
 		posZpink = 8 * sin(i);
 		pointLights[0].SetPos(glm::vec3(15.0f + posXpink, 7.0f, -15.0f + posZpink));
@@ -444,27 +493,49 @@ int main()
 
 		//Color
 		if (up == true) {
-			j += 0.05;
+			j += 0.005;
 			if (j >= 1.0f) {
 				up = false;
 			}
 		}
 		else {
-			j -= 0.05;
+			j -= 0.005;
 			if (j <= 0.0f) {
 				up = true;
 			}
 		}
-		printf("%f//", j);
-		printf("%d", up);
-		pointLights[0].SetColor(glm::vec3(1.0f - j, 0.0f + j, 1.0f - j ));
+		pointLights[0].SetColor(glm::vec3(1.0f - j, 0.0f + j, 1.0f - j));
 		pointLights[1].SetColor(glm::vec3(0.0f + j, 1.0f - j, 1.0f - j));
-		
 
+		//SpotLights
+		spotLights[1].SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		spotLights[2].SetColor(glm::vec3(1.0f, 0.0f, 1.0f));
+		spotLights[4].SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	}
 
-		shaderList[0].SetDirectionalLight(&mainLight);
-		shaderList[0].SetPointLights(pointLights, pointLightCount);
-		shaderList[0].SetSpotLights(spotLights, spotLightCount);
+	// Luz con teclas
+	//Luz Dj
+	if (mainWindow.getLuzDj() == GL_TRUE) {
+		spotLights[3].SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
+	}
+	else if (mainWindow.getLuzDj() == GL_FALSE) {
+		spotLights[3].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	}
+
+	//Luz Barra
+	if (mainWindow.getLuzBarra() == GL_TRUE) {
+		spotLights[0].SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
+	}
+	else if (mainWindow.getLuzBarra() == GL_FALSE) {
+		spotLights[0].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	}
+
+	shaderList[0].SetDirectionalLight(&mainLight);
+	shaderList[0].SetPointLights(pointLights, pointLightCount);
+	shaderList[0].SetSpotLights(spotLights, spotLightCount);
+	
+	/*******************************************/
+
 
 
 		glm::mat4 model(1.0);
@@ -483,7 +554,6 @@ int main()
 		Bar.RenderModel();
 
 		/**********************Jhon**********************/
-		printf("**Piso:%f**", pisoJhon);
 		/*===========Recorrido===========*/
 		//Paredes Afuera//
 		//Enfrente
@@ -525,7 +595,6 @@ int main()
 
 		/***************Dentro del Bar*****************/
 		if (mainWindow.getMoveJhonZ() < 0.0f && mainWindow.getMoveJhonZ() >= -32.0f && mainWindow.getMoveJhonX() >= -6.0f && mainWindow.getMoveJhonX() < 46.0f) {
-			printf("Entro al bar\\");
 			// Corredor principal
 			if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && mainWindow.getMoveJhonZ() >= -3.0f && pisoJhon == 0.5f) {
 				pisoJhon = 0.0f;
@@ -758,15 +827,15 @@ int main()
 
 		if (mainWindow.getWalking() == GL_TRUE) {
 			if (Front == true) {
-				rotateJhonLegR -= 1.0;
-				rotateJhonLegL += 1.0;
+				rotateJhonLegR -= 2.0;
+				rotateJhonLegL += 2.0;
 				if (rotateJhonLegR == -30) {
 					Front = false;
 				}
 			}
 			else if (Front == false) {
-				rotateJhonLegR += 1.0;
-				rotateJhonLegL -= 1.0;
+				rotateJhonLegR += 2.0;
+				rotateJhonLegL -= 2.0;
 				if (rotateJhonLegR == 30) {
 					Front = true;
 				}
@@ -818,15 +887,6 @@ int main()
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		JhonTorzo.RenderModel();
-
-		printf("X:%f ", mainWindow.getMoveJhonX());
-		printf("Y:%f ", mainWindow.getMoveJhonY());
-		printf("Z:%f", mainWindow.getMoveJhonZ());
-		printf("|||||||||||||||||Last X:%f ", mainWindow.getlastValueJhonX());
-		//printf("Last Y:%f", -2.0f + mainWindow.getlastValueJhonY());
-		printf("Last Z:%f\n", mainWindow.getlastValueJhonZ());
-
-
 		//****************************  PLANTA BAJA ********************************
 
 

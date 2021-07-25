@@ -24,6 +24,11 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	MoveJhonZ = 0.0f;
 	Walking = GL_FALSE;
 	/***************/
+
+	//////////Luces//////////
+	LuzDj = GL_TRUE;
+	LuzBarra = GL_TRUE;
+	/////////////////////////
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
@@ -141,21 +146,13 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 		theWindow->MoveJhonX -= 0.5;
 	}
 	//Rotate
-	if (key == GLFW_KEY_UP)
-	{
-		theWindow->MoveJhonY += 1.0;
-	}
-	if (key == GLFW_KEY_DOWN)
-	{
-		theWindow->MoveJhonY -= 1.0;
-	}
 	if (key == GLFW_KEY_LEFT)
 	{
-		theWindow->RotateJhonZ += 1.0;
+		theWindow->RotateJhonZ += 10.0;
 	}
 	if (key == GLFW_KEY_RIGHT)
 	{
-		theWindow->RotateJhonZ -= 1.0;
+		theWindow->RotateJhonZ -= 10.0;
 	}
 	if ((key == GLFW_KEY_W || key == GLFW_KEY_S || key == GLFW_KEY_A || key == GLFW_KEY_D) && action == GLFW_PRESS) {
 		theWindow->Walking = GL_TRUE;
@@ -164,6 +161,26 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 		theWindow->Walking = GL_FALSE;
 	}
 	/****************************/
+	//////////Luces//////////
+	if (key == GLFW_KEY_V && action == GLFW_PRESS) {
+		if (theWindow->LuzDj == GL_TRUE) {
+			theWindow->LuzDj = GL_FALSE;
+		} else if (theWindow->LuzDj == GL_FALSE) {
+			theWindow->LuzDj = GL_TRUE;
+		}
+	}
+	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
+		if (theWindow->LuzBarra == GL_TRUE) {
+			theWindow->LuzBarra = GL_FALSE;
+		}
+		else if (theWindow->LuzBarra == GL_FALSE) {
+			theWindow->LuzBarra = GL_TRUE;
+		}
+	}
+	/////////////////////////
+
+	//Camera
+
 
 
 	if (key >= 0 && key < 1024)
