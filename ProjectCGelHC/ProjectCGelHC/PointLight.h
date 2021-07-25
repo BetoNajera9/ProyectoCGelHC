@@ -16,6 +16,7 @@ public:
 		GLfloat constantLocation, GLfloat linearLocation, GLfloat exponentLocation);
 	//movimiento de las luces
 	void SetPos(glm::vec3 pos);
+	void SetColor(glm::vec3 col);
 	~PointLight();
 
 protected:

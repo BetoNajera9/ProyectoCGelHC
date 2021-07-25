@@ -39,6 +39,11 @@ void PointLight::SetPos(glm::vec3 pos)
 {
 	position = pos;
 }
+
+void PointLight::SetColor(glm::vec3 col)
+{
+	color = col;
+}
 PointLight::~PointLight()
 {
 }

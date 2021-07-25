@@ -79,7 +79,8 @@ float rotateJhonLegL;
 
 Skybox skybox;
 
-float i = 0;
+float i = 0, j = 0;
+bool up = true;
 float posXpink, posZpink, posXblue, posZblue;
 
 //materiales
@@ -426,13 +427,35 @@ int main()
 
 	/*	spotLights[0].SetPos(glm::vec3(1.0f, 0.0f, 50.0f)); */
 
+		//Espectaculo de luces//
+		//Movimiwnto
 		i -= 0.1;
 		posXpink = 8 * cos(i);
 		posZpink = 8 * sin(i);
 		pointLights[0].SetPos(glm::vec3(15.0f + posXpink, 7.0f, -15.0f + posZpink));
+
 		posZblue = 8 * cos(i);
 		posXblue = 8 * sin(i);
 		pointLights[1].SetPos(glm::vec3(15.0f + posXblue, 7.0f, -15.0f + posZblue));
+
+		//Color
+		if (up == true) {
+			j += 0.05;
+			if (j >= 1.0f) {
+				up = false;
+			}
+		}
+		else {
+			j -= 0.05;
+			if (j <= 0.0f) {
+				up = true;
+			}
+		}
+		printf("%f//", j);
+		printf("%d", up);
+		pointLights[0].SetColor(glm::vec3(1.0f - j, 0.0f + j, 1.0f - j ));
+		pointLights[1].SetColor(glm::vec3(0.0f + j, 1.0f - j, 1.0f - j));
+		
 
 
 		shaderList[0].SetDirectionalLight(&mainLight);
