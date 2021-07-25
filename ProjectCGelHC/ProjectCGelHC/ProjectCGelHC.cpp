@@ -59,6 +59,8 @@ Model Auto2;
 Model Auto3;
 Model Mueble;
 Model Llanta_M;
+Model Woman01;
+Model Iroman;
 
 //Personas
 Model JhonBrazoDer;
@@ -77,6 +79,8 @@ float rotateJhonLegL;
 
 Skybox skybox;
 
+float i = 0;
+float posXpink, posZpink, posXblue, posZblue;
 
 //materiales
 Material Material_brillante;
@@ -85,9 +89,9 @@ Material Material_opaco;
 // Lights
 DirectionalLight mainLight;
 //para declarar varias luces de tipo pointlight
-PointLight pointLights[10];
+PointLight pointLights[MAX_POINT_LIGHTS];
 
-SpotLight spotLights[10];
+SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
@@ -261,7 +265,10 @@ int main()
 	Auto3.LoadModel("Models/AutoBeto.obj");
 	Mueble = Model();
 	Mueble.LoadModel("Models/Mueble.obj");
-	
+	Woman01 = Model();
+	Woman01.LoadModel("Models/Woman01.fbx");
+	Iroman = Model();
+	Iroman.LoadModel("Models/Iroman.obj");
 
 	//Personas
 	JhonBrazoDer = Model();
@@ -296,22 +303,84 @@ int main()
 
 	unsigned int pointLightCount = 0;
 
-	pointLights[0] = PointLight(1.0f, 0.0f, 0.0f, //Color
-		2.0f, 2.0f,//intensidad
-		0.0f, 0.0f, 8.0f,//Posicion
-		0.5f, 0.2f, 0.1f);//4(.2)^2-2*0.5*0.1
+	//Luz que van girar
+	pointLights[0] = PointLight(1.0f, 0.0f, 1.0f, //Color
+		9.0f, 9.0f,//intensidad
+		15.0f, 7.0f, -15.0f,//Posicion
+		0.3f, 0.2f, 0.1f);//4(.2)^2-2*0.5*0.1
+	pointLightCount++;
+
+
+	pointLights[1] = PointLight(0.0f, 1.0f, 1.0f, //Color
+		9.0f, 9.0f,//intensidad
+		25.0f, 7.0f, -15.0f,//Posicion
+		0.3f, 0.2f, 0.1f);//4(.2)^2-2*0.5*0.1
 	pointLightCount++;
 
 	unsigned int spotLightCount = 0;
 
+
+	//Luz Barras
+
 	spotLights[0] = SpotLight(0.0f, 0.0f, 1.0f, //color
 		1.0f, 2.0f,	//Intensidad
-		5.0f, 10.0f, 8.0f,	//posicion
+		22.4f, 80.0f, -3.5f,	//posicion
 		//x     Y     Z
-		-5.0f, 0.0f, 0.0f, //direccion
+		0.0f, -5.0f, 0.0f, //direccion
 		1.0f, 0.0f, 0.0f,
-		15.0f);
+		3.5f);
 	spotLightCount++;
+
+
+	////Luz blanca
+
+	spotLights[1] = SpotLight(1.0f, 1.0f, 1.0f, //color
+		0.8f, 0.8f,	//Intensidad
+		22.8f, 4.0f, -16.7f,	//posicion
+		//x     Y     Z
+		0.0f, -5.0f, 0.0f, //direccion
+		1.0f, 0.0f, 0.0f,
+		85.0f);
+	spotLightCount++;
+
+
+
+	//Luz Rosa
+	spotLights[2] = SpotLight(1.0f, 0.0f, 1.0f, //color
+		0.8f, 0.8f,	//Intensidad
+		7.4f, 4.0f, -16.7f,	//posicion
+		//x     Y     Z
+		0.0f, -5.0f, 0.0f, //direccion
+		1.0f, 0.0f, 0.0f,
+		85.0f);
+	spotLightCount++;
+
+	//Luz Mesa Dj
+	spotLights[3] = SpotLight(0.0f, 0.0f, 1.0f, //color
+		1.0f, 2.0f,	//Intensidad
+		41.5f, 110.0f, -15.8f,	//posicion
+		//x     Y     Z
+		0.0f, -5.0f, 0.0f, //direccion
+		1.0f, 0.0f, 0.0f,
+		2.0f);
+	spotLightCount++;
+
+
+
+	//Luz Estacionamientos
+	spotLights[4] = SpotLight(1.0f, 1.0f, 1.0f, //color
+		0.5f, 0.5f,	//Intensidad
+		111.5f, 110.0f, -24.5f,	//posicion
+		//x     Y     Z
+		0.0f, -5.0f, 0.0f, //direccion
+		1.0f, 0.0f, 0.0f,
+		18.0f);
+	spotLightCount++;
+
+
+
+
+
 
 
 
@@ -353,7 +422,17 @@ int main()
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		//movimiento de luces
 
+	/*	spotLights[0].SetPos(glm::vec3(1.0f, 0.0f, 50.0f)); */
+
+		i -= 0.1;
+		posXpink = 8 * cos(i);
+		posZpink = 8 * sin(i);
+		pointLights[0].SetPos(glm::vec3(15.0f + posXpink, 7.0f, -15.0f + posZpink));
+		posZblue = 8 * cos(i);
+		posXblue = 8 * sin(i);
+		pointLights[1].SetPos(glm::vec3(15.0f + posXblue, 7.0f, -15.0f + posZblue));
 
 
 		shaderList[0].SetDirectionalLight(&mainLight);
@@ -1552,6 +1631,21 @@ int main()
 
 		//Personas
 
+		//woman
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(152.8f, -2.0f, -50.0f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Woman01.RenderModel();
+
+		//iroman
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(152.8f, -2.0f, -30.0f));
+		model = glm::scale(model, glm::vec3(-1.0f, -1.0f, -1.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Iroman.RenderModel();
 
 		glUseProgram(0);
 
