@@ -23,6 +23,17 @@ public:
 	GLfloat getRotateJhonY() { return RotateJhonY; }
 	GLfloat getRotateJhonZ() { return RotateJhonZ; }
 
+	GLfloat getlastValueJhonX() { return lastValueJhonX; }
+	GLfloat getlastValueJhonZ() { return lastValueJhonZ; }
+
+	void setMoveJhonX(float X) { MoveJhonX = X; }
+	void setMoveJhonY(float Y) { MoveJhonY = Y; }
+	void setMoveJhonZ(float Z) { MoveJhonZ = Z; }
+
+	void setRotateJhonX(float X) { RotateJhonX = X; }
+	void setRotateJhonY(float Y) { RotateJhonY = Y; }
+	void setRotateJhonZ(float Z) { RotateJhonZ = Z; }
+
 	GLboolean getWalking() { return Walking; }
 	/*************/
 
@@ -50,6 +61,8 @@ private:
 	GLfloat RotateJhonX;
 	GLfloat RotateJhonY;
 	GLfloat RotateJhonZ;
+	GLfloat lastValueJhonX;
+	GLfloat lastValueJhonZ;
 	/***************/
 	bool mouseFirstMoved;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);

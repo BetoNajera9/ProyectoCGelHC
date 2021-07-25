@@ -20,6 +20,8 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	RotateJhonX = 0.0f;
 	RotateJhonY = 0.0f;
 	RotateJhonZ = 0.0f;
+	MoveJhonX = 0.0f;
+	MoveJhonZ = 0.0f;
 	Walking = GL_FALSE;
 	/***************/
 	for (size_t i = 0; i < 1024; i++)
@@ -116,28 +118,36 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	//Move
 	if (key == GLFW_KEY_W)
 	{
-		theWindow->MoveJhonZ += 1.0;
+		theWindow->lastValueJhonZ = theWindow->MoveJhonZ;
+		theWindow->lastValueJhonX = theWindow->MoveJhonX;
+		theWindow->MoveJhonZ -= 0.5;
 	}
 	if (key == GLFW_KEY_S)
 	{
-		theWindow->MoveJhonZ -= 1.0;
+		theWindow->lastValueJhonZ = theWindow->MoveJhonZ;
+		theWindow->lastValueJhonX = theWindow->MoveJhonX;
+		theWindow->MoveJhonZ += 0.5;
 	}
 	if (key == GLFW_KEY_D)
 	{
-		theWindow->MoveJhonX -= 1.0;
+		theWindow->lastValueJhonZ = theWindow->MoveJhonZ;
+		theWindow->lastValueJhonX = theWindow->MoveJhonX;
+		theWindow->MoveJhonX += 0.5;
 	}
 	if (key == GLFW_KEY_A)
 	{
-		theWindow->MoveJhonX += 1.0;
+		theWindow->lastValueJhonZ = theWindow->MoveJhonZ;
+		theWindow->lastValueJhonX = theWindow->MoveJhonX;
+		theWindow->MoveJhonX -= 0.5;
 	}
 	//Rotate
 	if (key == GLFW_KEY_UP)
 	{
-		//theWindow->RotateJhonZ += 1.0;
+		theWindow->MoveJhonY += 1.0;
 	}
 	if (key == GLFW_KEY_DOWN)
 	{
-		//theWindow->RotateJhonZ -= 1.0;
+		theWindow->MoveJhonY -= 1.0;
 	}
 	if (key == GLFW_KEY_LEFT)
 	{

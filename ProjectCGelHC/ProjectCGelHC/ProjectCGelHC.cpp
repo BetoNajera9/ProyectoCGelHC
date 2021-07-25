@@ -69,6 +69,10 @@ float rotateJhonArmR;
 float rotateJhonArmL;
 float rotateJhonLegR;
 float rotateJhonLegL;
+float JhonX = 0.0f;
+float JhonY = 0.0f;
+float JhonZ = 0.0f;
+float pisoJhon = 0;
 
 Skybox skybox;
 
@@ -351,7 +355,231 @@ int main()
 		Bar.RenderModel();
 
 		/**********************Jhon**********************/
-		if (mainWindow.getWalking() == GL_TRUE) {
+		printf("**Piso:%f**", pisoJhon);
+		/*===========Recorrido===========*/
+		//Paredes Afuera//
+		//Enfrente
+		if (mainWindow.getMoveJhonZ() < 0.0f && mainWindow.getMoveJhonX() > -1.5f && mainWindow.getMoveJhonX() < 47.0f && mainWindow.getlastValueJhonZ() == 0.0f) {
+			mainWindow.setMoveJhonZ(0.0f);
+		}
+		//Atras
+		if (mainWindow.getMoveJhonZ() > -34.0f && mainWindow.getlastValueJhonZ() == -34.0f && mainWindow.getMoveJhonX() < 47.0f && mainWindow.getMoveJhonX() > -8.0f) {
+			mainWindow.setMoveJhonZ(-34.0f);
+		}
+		//Derecha
+		if (mainWindow.getMoveJhonX() < 47.0f && mainWindow.getlastValueJhonX() == 47.0f && mainWindow.getMoveJhonZ() < 0.0f && mainWindow.getMoveJhonX() > -34.0f) {
+			mainWindow.setMoveJhonX(47.0f);
+		}
+		//Izquierda
+		if (mainWindow.getMoveJhonX() > -8.0f && mainWindow.getlastValueJhonX() == -8.0f && mainWindow.getMoveJhonZ() < 0.0f && mainWindow.getMoveJhonX() > -34.0f) {
+			mainWindow.setMoveJhonX(-8.0f);
+		}
+		///////////////////
+		//Paredes Adentro//
+		//Enfrente
+		if (mainWindow.getMoveJhonZ() > -2.0f &&  mainWindow.getlastValueJhonZ() == -2.0f && mainWindow.getMoveJhonX() < 44.0f && mainWindow.getMoveJhonX() > -5.0f) {
+			mainWindow.setMoveJhonZ(-2.0f);
+		}
+		//Atras
+		if (mainWindow.getMoveJhonZ() < -31.0f && mainWindow.getlastValueJhonZ() == -31.0f && mainWindow.getMoveJhonX() < 44.0f && mainWindow.getMoveJhonX() > -5.0f) {
+			mainWindow.setMoveJhonZ(-31.0f);
+		}
+		//Derecha
+		if (mainWindow.getMoveJhonX() > 44.0f &&  mainWindow.getlastValueJhonX() == 44.0f && mainWindow.getMoveJhonZ() < 0.0f && mainWindow.getMoveJhonZ() > -31.0f) {
+			mainWindow.setMoveJhonX(44.0f);
+		}
+		//Izquierda
+		if (mainWindow.getMoveJhonX() < -5.0f &&  mainWindow.getlastValueJhonX() == -5.0f && mainWindow.getMoveJhonZ() < 0.0f && mainWindow.getMoveJhonZ() > -31.0f) {
+			mainWindow.setMoveJhonX(-5.0f);
+		}
+		///////////////////
+		/**********************************************/
+
+		/***************Dentro del Bar*****************/
+		if (mainWindow.getMoveJhonZ() < 0.0f && mainWindow.getMoveJhonZ() >= -32.0f && mainWindow.getMoveJhonX() >= -6.0f && mainWindow.getMoveJhonX() < 46.0f) {
+			printf("Entro al bar\\");
+			// Corredor principal
+			if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && mainWindow.getMoveJhonZ() >= -3.0f && pisoJhon == 0.5f) {
+				pisoJhon = 0.0f;
+				mainWindow.setMoveJhonY(0.25f);
+			}
+			else if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && mainWindow.getMoveJhonZ() <= -3.0f && pisoJhon == 0.0f) {
+				pisoJhon = 0.5f;
+			}
+
+			if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && pisoJhon == 0.5) {
+				// Escaleras principales
+				if (mainWindow.getMoveJhonZ() <= -3.0f && mainWindow.getMoveJhonZ() >= -23.0f) {
+					pisoJhon = 0.5;
+					if (mainWindow.getlastValueJhonZ() > mainWindow.getMoveJhonZ() && mainWindow.getWalking() == GL_TRUE && pisoJhon == 0.5) {
+						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() + 0.15f);
+					}
+					else if (mainWindow.getlastValueJhonZ() < mainWindow.getMoveJhonZ() && mainWindow.getWalking() == GL_TRUE && pisoJhon == 0.5) {
+						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() - 0.15f);
+					}
+				}
+				else if (mainWindow.getMoveJhonZ() <= -23.0f && pisoJhon == 0.5) {
+					mainWindow.setMoveJhonY(9.2f);
+					pisoJhon = 1.0f;
+				}
+				
+			}
+			// Bajar
+			else if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && mainWindow.getMoveJhonZ() == -23 && mainWindow.getlastValueJhonZ() < mainWindow.getMoveJhonZ()) {
+				pisoJhon = 0.5;
+				mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() - 0.14f);
+			}
+			// Paredes del corredor
+			if(mainWindow.getMoveJhonX() > -2.0f && mainWindow.getlastValueJhonX() == -2.0f && (pisoJhon == 0.5 || pisoJhon == 0.0f)){
+				mainWindow.setMoveJhonX(-2.0f);
+
+			}
+
+			//1er piso
+			if (pisoJhon == 1.0f) {
+				/********Paredes********/
+				//1era pared
+				if (mainWindow.getMoveJhonX() > -2.0f &&  mainWindow.getlastValueJhonX() == -2.0f && mainWindow.getMoveJhonZ() < -26.0f && mainWindow.getMoveJhonZ() > -31.0f) {
+					mainWindow.setMoveJhonX(-2.0f);
+				}
+				//2da
+				if (mainWindow.getMoveJhonZ() < -26.0f &&  mainWindow.getlastValueJhonZ() == -26.0f && mainWindow.getMoveJhonX() > -2.0f && mainWindow.getMoveJhonX() < 29.0f) {
+					mainWindow.setMoveJhonZ(-26.0f);
+				}
+				if (mainWindow.getMoveJhonZ() < -26.0f &&  mainWindow.getlastValueJhonZ() == -26.0f && mainWindow.getMoveJhonX() > 31.0f && mainWindow.getMoveJhonX() < 44.0f) {
+					mainWindow.setMoveJhonZ(-26.0f);
+				}
+				//3ra
+				if (mainWindow.getMoveJhonX() < 0.0f &&  mainWindow.getlastValueJhonX() == 0.0f && mainWindow.getMoveJhonZ() < -6.0f && mainWindow.getMoveJhonZ() > -23.0f) {
+					mainWindow.setMoveJhonX(0.0f);
+				}
+			}
+			//1ra Escalera
+			if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= 0.0f && mainWindow.getMoveJhonZ() > -6.0f && pisoJhon == 1.0f) {
+				pisoJhon = 1.5f;
+			}
+			if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && mainWindow.getMoveJhonZ() <= -6.0f && pisoJhon == 1.5f ) {
+				pisoJhon = 1.5f;
+				//Pared escaleras
+				if (mainWindow.getMoveJhonX() > -2.0f &&  mainWindow.getlastValueJhonX() == -2.0f && mainWindow.getMoveJhonZ() < -6.0f && mainWindow.getMoveJhonZ() > -28.0f) {
+					mainWindow.setMoveJhonX(-2.0f);
+				}
+			}
+			else if (mainWindow.getMoveJhonX() >= 0.0f && mainWindow.getMoveJhonZ() >= -6.0f && pisoJhon == 1.5f) {
+				pisoJhon = 1.0f;
+			}
+
+			//Subiendo escaleras
+			if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && pisoJhon == 1.5) {
+				if (mainWindow.getMoveJhonZ() <= -6.0f) {
+					pisoJhon = 1.5f;
+					//Pared escaleras
+					if (mainWindow.getMoveJhonX() > -2.0f &&  mainWindow.getlastValueJhonX() == -2.0f && mainWindow.getMoveJhonZ() < -6.0f && mainWindow.getMoveJhonZ() > -28.0f) {
+						mainWindow.setMoveJhonX(-2.0f);
+					}
+				}
+				
+				// Escaleras principales
+				if (mainWindow.getMoveJhonZ() <= -6.0f && mainWindow.getMoveJhonZ() >= -28.0f && pisoJhon == 1.5f) {
+					if (mainWindow.getlastValueJhonZ() > mainWindow.getMoveJhonZ() && mainWindow.getWalking() == GL_TRUE) {
+						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() + 0.12f);
+					}
+					else if (mainWindow.getlastValueJhonZ() < mainWindow.getMoveJhonZ() && mainWindow.getWalking() == GL_TRUE) {
+						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() - 0.12f);
+					}
+				}
+				else if(mainWindow.getMoveJhonZ() <= -28.0f && pisoJhon == 1.5 && pisoJhon == 1.5f){
+					mainWindow.setMoveJhonY(18.0f);
+					pisoJhon = 2;
+				}
+			}
+			// Bajar
+			else if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && mainWindow.getMoveJhonZ() == -28.0f && mainWindow.getlastValueJhonZ() < mainWindow.getMoveJhonZ() && pisoJhon == 2.0f) {
+				pisoJhon = 1.5;
+				mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() - 0.14f);
+			}
+
+			//2do Piso
+			if (pisoJhon == 2) {
+				//Escaleras 1
+				if (mainWindow.getMoveJhonZ() < -13.0f &&  mainWindow.getlastValueJhonZ() == -13.0f && mainWindow.getMoveJhonX() > -5.0f && mainWindow.getMoveJhonX() < 0.0f) {
+					mainWindow.setMoveJhonZ(-13.0f);
+				}
+				if (mainWindow.getMoveJhonX() < 0.0f &&  mainWindow.getlastValueJhonX() == 0.0f && mainWindow.getMoveJhonZ() > -28.0f && mainWindow.getMoveJhonZ() < -13.0f) {
+					mainWindow.setMoveJhonX(0.0f);
+				}
+				//Escaleras 2
+				if (mainWindow.getMoveJhonZ() < -26.0f &&  mainWindow.getlastValueJhonZ() == -26.0f && mainWindow.getMoveJhonX() > 25.0f && mainWindow.getMoveJhonX() < 41.0f) {
+					mainWindow.setMoveJhonZ(-26.0f);
+				}
+				if (mainWindow.getMoveJhonX() > 25.0f &&  mainWindow.getlastValueJhonX() == 25.0f && mainWindow.getMoveJhonZ() > -31.0f && mainWindow.getMoveJhonZ() < -26.0f) {
+					mainWindow.setMoveJhonX(25.0f);
+				}
+
+				//////Mesa DJ///////
+				//Enfrente
+				if (mainWindow.getMoveJhonZ() < -12.0f &&  mainWindow.getlastValueJhonZ() == -12.0f && mainWindow.getMoveJhonX() > 39.5f && mainWindow.getMoveJhonX() < 43.5f) {
+					mainWindow.setMoveJhonZ(-12.0f);
+				}
+				//Atras
+				if (mainWindow.getMoveJhonZ() > -20.0f &&  mainWindow.getlastValueJhonZ() == -20.0f && mainWindow.getMoveJhonX() > 39.5f && mainWindow.getMoveJhonX() < 43.5f) {
+					mainWindow.setMoveJhonZ(-20.0f);
+				}
+				//Derecha
+				if (mainWindow.getMoveJhonX() < 43.5f &&  mainWindow.getlastValueJhonX() == 43.5f && mainWindow.getMoveJhonZ() > -20.0f && mainWindow.getMoveJhonZ() < -12.0f) {
+					mainWindow.setMoveJhonX(43.5f);
+				}
+				//Izquierda
+				if (mainWindow.getMoveJhonX() > 39.5f &&  mainWindow.getlastValueJhonX() == 39.5f && mainWindow.getMoveJhonZ() > -20.0f && mainWindow.getMoveJhonZ() < -12.0f) {
+					mainWindow.setMoveJhonX(39.5f);
+				}
+				////////////////////
+
+				//Balcon//
+				//Enfrente
+				if (mainWindow.getMoveJhonZ() < -9.0f &&  mainWindow.getlastValueJhonZ() == -9.0f && mainWindow.getMoveJhonX() > 3.0f && mainWindow.getMoveJhonX() < 36.0f) {
+					mainWindow.setMoveJhonZ(-9.0f);
+				}
+				//Atras
+				if (mainWindow.getMoveJhonZ() > -24.0f &&  mainWindow.getlastValueJhonZ() == -24.0f && mainWindow.getMoveJhonX() > 3.0f && mainWindow.getMoveJhonX() < 36.0f) {
+					mainWindow.setMoveJhonZ(-24.0f);
+				}
+				//Derecha
+				if (mainWindow.getMoveJhonX() < 36.0f &&  mainWindow.getlastValueJhonX() == 36.0f && mainWindow.getMoveJhonZ() > -24.0f && mainWindow.getMoveJhonZ() < -9.0f) {
+					mainWindow.setMoveJhonX(36.0f);
+				}
+				//Izquierda
+				if (mainWindow.getMoveJhonX() > 3.0f &&  mainWindow.getlastValueJhonX() == 3.0f && mainWindow.getMoveJhonZ() > -24.0f && mainWindow.getMoveJhonZ() < -9.0f) {
+					mainWindow.setMoveJhonX(3.0f);
+				}
+				//////////
+
+				//Enfrente
+				if (mainWindow.getMoveJhonZ() > -2.0f &&  mainWindow.getlastValueJhonZ() == -2.0f && mainWindow.getMoveJhonX() < 44.0f && mainWindow.getMoveJhonX() > -5.0f) {
+					mainWindow.setMoveJhonZ(-2.0f);
+				}
+				//Atras
+				if (mainWindow.getMoveJhonZ() < -31.0f && mainWindow.getlastValueJhonZ() == -31.0f && mainWindow.getMoveJhonX() < 44.0f && mainWindow.getMoveJhonX() > -5.0f) {
+					mainWindow.setMoveJhonZ(-31.0f);
+				}
+				//Derecha
+				if (mainWindow.getMoveJhonX() > 44.0f &&  mainWindow.getlastValueJhonX() == 44.0f && mainWindow.getMoveJhonZ() < 0.0f && mainWindow.getMoveJhonZ() > -31.0f) {
+					mainWindow.setMoveJhonX(44.0f);
+				}
+				//Izquierda
+				if (mainWindow.getMoveJhonX() < -5.0f &&  mainWindow.getlastValueJhonX() == -5.0f && mainWindow.getMoveJhonZ() < 0.0f && mainWindow.getMoveJhonZ() > -31.0f) {
+					mainWindow.setMoveJhonX(-5.0f);
+				}
+			}
+			
+		}
+		else {
+			mainWindow.setMoveJhonY(0.0f);
+		}
+
+		/*=================================*/
+
+		/*if (mainWindow.getWalking() == GL_TRUE) {
 			if (Front == true) {
 				rotateJhonArmR += 0.5;
 				rotateJhonArmL -= 0.5;
@@ -376,38 +604,42 @@ int main()
 				rotateJhonArmR += 0.5;
 				rotateJhonArmL -= 0.5;
 			}
-		}
+		}*/
 		
 		model = glm::mat4(1.0);
+		
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), 0.3f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(-0.35f + mainWindow.getMoveJhonX(), 0.3f, -0.05f + mainWindow.getMoveJhonZ()));
 		model = glm::rotate(model, 25 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::rotate(model, rotateJhonArmR * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		JhonBrazoDer.RenderModel();
 
 		model = glm::mat4(1.0);
+		
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), 0.3f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(0.35f + mainWindow.getMoveJhonX(), 0.3f, -0.05f + mainWindow.getMoveJhonZ()));
 		model = glm::rotate(model, -25 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::rotate(model, rotateJhonArmL * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		JhonBrazoIzq.RenderModel();
 
 		if (mainWindow.getWalking() == GL_TRUE) {
 			if (Front == true) {
-				rotateJhonLegR -= 0.5;
-				rotateJhonLegL += 0.5;
-				if (rotateJhonLegR == -45) {
+				rotateJhonLegR -= 1.0;
+				rotateJhonLegL += 1.0;
+				if (rotateJhonLegR == -30) {
 					Front = false;
 				}
 			}
 			else if (Front == false) {
-				rotateJhonLegR += 0.5;
-				rotateJhonLegL -= 0.5;
-				if (rotateJhonLegR == 45) {
+				rotateJhonLegR += 1.0;
+				rotateJhonLegL -= 1.0;
+				if (rotateJhonLegR == 30) {
 					Front = true;
 				}
 			}
@@ -421,47 +653,56 @@ int main()
 			}
 
 			if (Stopped == false && rotateJhonLegR > 0) {
-				rotateJhonLegR -= 0.5;
-				rotateJhonLegL += 0.5;
+				rotateJhonLegR -= 1.5;
+				rotateJhonLegL += 1.5;
 			}
 			if (Stopped == false && rotateJhonLegR < 0) {
-				rotateJhonLegR += 0.5;
-				rotateJhonLegL -= 0.5;
+				rotateJhonLegR += 1.5;
+				rotateJhonLegL -= 1.5;
 			}
 		}
 		
 		model = glm::mat4(1.0);
+		
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), 0.1f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), -0.8f, 0.0f + mainWindow.getMoveJhonZ()));
 		model = glm::rotate(model, rotateJhonLegR * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.6f, 1.5f, 1.5f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		JhonPiernaDer.RenderModel();
 
 		model = glm::mat4(1.0);
+		
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), 0.1f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), -0.8f, 0.0f + mainWindow.getMoveJhonZ()));
 		model = glm::rotate(model, rotateJhonLegL * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		JhonPiernaIzq.RenderModel();
 
 		model = glm::mat4(1.0);
+		
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), 0.0f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), -2.0f, 0.0f + mainWindow.getMoveJhonZ()));
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		JhonTorzo.RenderModel();
 
-		printf("X:%f", 0.0f + mainWindow.getMoveJhonX());
-		printf("Y:%f", -2.0f + mainWindow.getMoveJhonY());
-		printf("Z:%f\n", 0.0f + mainWindow.getMoveJhonZ());
+		printf("X:%f ", mainWindow.getMoveJhonX());
+		printf("Y:%f ", mainWindow.getMoveJhonY());
+		printf("Z:%f", mainWindow.getMoveJhonZ());
+		printf("|||||||||||||||||Last X:%f ", mainWindow.getlastValueJhonX());
+		//printf("Last Y:%f", -2.0f + mainWindow.getlastValueJhonY());
+		printf("Last Z:%f\n", mainWindow.getlastValueJhonZ());
 
 
 		//****************************  PLANTA BAJA ********************************
 
 
-								     //BAÑOS HOMBRES
+		 //BAÑOS HOMBRES
 
 		//Lavabo1
 		model = glm::mat4(1.0);
