@@ -389,7 +389,6 @@ spotLights[3] = SpotLight(0.0f, 0.0f, 1.0f, //color
 spotLightCount++;
 
 
-
 //Luz Estacionamientos
 spotLights[4] = SpotLight(1.0f, 1.0f, 1.0f, //color
 	0.5f, 0.5f,	//Intensidad
@@ -400,19 +399,9 @@ spotLights[4] = SpotLight(1.0f, 1.0f, 1.0f, //color
 	18.0f);
 spotLightCount++;
 
-
-
-
-
-
-
-
 GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
 uniformSpecularIntensity = 0, uniformShininess = 0;
 glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
-
-
-
 
 timeStart = clock();
 
@@ -482,7 +471,7 @@ while (!mainWindow.getShouldClose())
 		spotLights[4].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 	}
 	else if (Dia == false) {
-		i -= 0.01;
+		i -= 0.05;
 		posXpink = 8 * cos(i);
 		posZpink = 8 * sin(i);
 		pointLights[0].SetPos(glm::vec3(15.0f + posXpink, 7.0f, -15.0f + posZpink));
@@ -493,7 +482,7 @@ while (!mainWindow.getShouldClose())
 
 		//Color
 		if (up == true) {
-			j += 0.005;
+			j += 0.05;
 			if (j >= 1.0f) {
 				up = false;
 			}
@@ -555,6 +544,7 @@ while (!mainWindow.getShouldClose())
 
 		/**********************Jhon**********************/
 		/*===========Recorrido===========*/
+		printf("Piso; %f\n", pisoJhon);
 		//Paredes Afuera//
 		//Enfrente
 		if (mainWindow.getMoveJhonZ() < 0.0f && mainWindow.getMoveJhonX() > -1.5f && mainWindow.getMoveJhonX() < 47.0f && mainWindow.getlastValueJhonZ() == 0.0f) {
@@ -609,10 +599,11 @@ while (!mainWindow.getShouldClose())
 				if (mainWindow.getMoveJhonZ() <= -3.0f && mainWindow.getMoveJhonZ() >= -23.0f) {
 					pisoJhon = 0.5;
 					if (mainWindow.getlastValueJhonZ() > mainWindow.getMoveJhonZ() && mainWindow.getWalking() == GL_TRUE && pisoJhon == 0.5) {
-						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() + 0.15f);
+						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() + 0.5f);
 					}
 					else if (mainWindow.getlastValueJhonZ() < mainWindow.getMoveJhonZ() && mainWindow.getWalking() == GL_TRUE && pisoJhon == 0.5) {
-						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() - 0.15f);
+						// Escaleras-----------------
+						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() - 0.4f);
 					}
 				}
 				else if (mainWindow.getMoveJhonZ() <= -23.0f && pisoJhon == 0.5) {
@@ -622,7 +613,7 @@ while (!mainWindow.getShouldClose())
 				
 			}
 			// Bajar
-			else if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && mainWindow.getMoveJhonZ() == -23 && mainWindow.getlastValueJhonZ() < mainWindow.getMoveJhonZ()) {
+			else if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && mainWindow.getMoveJhonZ() == -23 && mainWindow.getlastValueJhonZ() < mainWindow.getMoveJhonZ() && pisoJhon == 1.0f) {
 				pisoJhon = 0.5;
 				mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() - 0.14f);
 			}
@@ -664,6 +655,7 @@ while (!mainWindow.getShouldClose())
 			}
 			else if (mainWindow.getMoveJhonX() >= 0.0f && mainWindow.getMoveJhonZ() >= -6.0f && pisoJhon == 1.5f) {
 				pisoJhon = 1.0f;
+				mainWindow.setMoveJhonY(9.2f);
 			}
 
 			//Subiendo escaleras
@@ -679,10 +671,12 @@ while (!mainWindow.getShouldClose())
 				// Escaleras principales
 				if (mainWindow.getMoveJhonZ() <= -6.0f && mainWindow.getMoveJhonZ() >= -28.0f && pisoJhon == 1.5f) {
 					if (mainWindow.getlastValueJhonZ() > mainWindow.getMoveJhonZ() && mainWindow.getWalking() == GL_TRUE) {
-						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() + 0.12f);
+						// Escaleras-----------------
+						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() + 0.55f);
 					}
 					else if (mainWindow.getlastValueJhonZ() < mainWindow.getMoveJhonZ() && mainWindow.getWalking() == GL_TRUE) {
-						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() - 0.12f);
+						// Escaleras-----------------
+						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() - 0.3f);
 					}
 				}
 				else if(mainWindow.getMoveJhonZ() <= -28.0f && pisoJhon == 1.5 && pisoJhon == 1.5f){
@@ -805,7 +799,7 @@ while (!mainWindow.getShouldClose())
 		
 		model = glm::mat4(1.0);
 		
-		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), 0.3f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX() + JhonX, 0.3f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ() + JhonZ));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, 25 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -816,7 +810,7 @@ while (!mainWindow.getShouldClose())
 
 		model = glm::mat4(1.0);
 		
-		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), 0.3f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX() + JhonX, 0.3f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ() + JhonZ));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, -25 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -827,15 +821,15 @@ while (!mainWindow.getShouldClose())
 
 		if (mainWindow.getWalking() == GL_TRUE) {
 			if (Front == true) {
-				rotateJhonLegR -= 2.0;
-				rotateJhonLegL += 2.0;
+				rotateJhonLegR -= 5.0;
+				rotateJhonLegL += 5.0;
 				if (rotateJhonLegR == -30) {
 					Front = false;
 				}
 			}
 			else if (Front == false) {
-				rotateJhonLegR += 2.0;
-				rotateJhonLegL -= 2.0;
+				rotateJhonLegR += 5.0;
+				rotateJhonLegL -= 5.0;
 				if (rotateJhonLegR == 30) {
 					Front = true;
 				}
@@ -850,18 +844,18 @@ while (!mainWindow.getShouldClose())
 			}
 
 			if (Stopped == false && rotateJhonLegR > 0) {
-				rotateJhonLegR -= 1.5;
-				rotateJhonLegL += 1.5;
+				rotateJhonLegR -= 10;
+				rotateJhonLegL += 10;
 			}
 			if (Stopped == false && rotateJhonLegR < 0) {
-				rotateJhonLegR += 1.5;
-				rotateJhonLegL -= 1.5;
+				rotateJhonLegR += 10;
+				rotateJhonLegL -= 10;
 			}
 		}
 		
 		model = glm::mat4(1.0);
 		
-		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), 0.1f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX() + JhonX, 0.1f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ() + JhonZ));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, rotateJhonLegR * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -871,7 +865,7 @@ while (!mainWindow.getShouldClose())
 
 		model = glm::mat4(1.0);
 		
-		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), 0.1f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX() + JhonX, 0.1f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ() + JhonZ));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, rotateJhonLegL * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -881,7 +875,7 @@ while (!mainWindow.getShouldClose())
 
 		model = glm::mat4(1.0);
 		
-		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX(), 0.0f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ()));
+		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX() + JhonX, 0.0f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ() + JhonZ));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));

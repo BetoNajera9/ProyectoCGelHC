@@ -146,6 +146,14 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 		theWindow->MoveJhonX -= 0.5;
 	}
 	//Rotate
+	if (key == GLFW_KEY_UP)
+	{
+		theWindow->MoveJhonY += 1.0;
+	}
+	if (key == GLFW_KEY_DOWN)
+	{
+		theWindow->MoveJhonY -= 1.0;
+	}
 	if (key == GLFW_KEY_LEFT)
 	{
 		theWindow->RotateJhonZ += 10.0;
