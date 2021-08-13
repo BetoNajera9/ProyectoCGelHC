@@ -75,6 +75,13 @@ Model JhonPiernaDer;
 Model JhonPiernaIzq;
 Model JhonTorzo;
 
+//Woman1
+Model Woman01BrazoDer;
+Model Woman01BrazoIzq;
+Model Woman01PiernaDer;
+Model Woman01PiernaIzq;
+Model Woman01Torzo;
+
 // Varibles Jhon
 bool Front = true;
 bool Stopped = true;
@@ -86,6 +93,19 @@ float JhonX = 0.0f;
 float JhonY = 0.0f;
 float JhonZ = 0.0f;
 float pisoJhon = 0;
+
+//Varables Woman1
+bool frontWoman = true;
+bool point1 = true;
+bool rotating = false;
+float Woman1X = 2.0f;
+float Woman1Y = 7.0f;
+float Woman1Z = -30.0f;
+float moveLegR = 0.0f;
+float moveLegL = 0.0f;
+float rotateWoman01LegR = 0.0f;
+float rotateWoman01LegL = 0.0f;
+float rotateWoman01 = 90.0f;
 
 //Tiempo
 float timeStart, timeEnd;
@@ -147,9 +167,6 @@ void calcAverageNormals(unsigned int * indices, unsigned int indiceCount, GLfloa
 		vertices[nOffset] = vec.x; vertices[nOffset + 1] = vec.y; vertices[nOffset + 2] = vec.z;
 	}
 }
-
-
-
 
 void CreateObjects()
 {
@@ -219,7 +236,6 @@ void CreateObjects()
 	meshList.push_back(obj4);
 
 }
-
 
 void CreateShaders()
 {
@@ -296,6 +312,18 @@ int main()
 	JhonPiernaIzq.LoadModel("Models/Jhon/JhonPiernaIzq.fbx");
 	JhonTorzo = Model();
 	JhonTorzo.LoadModel("Models/Jhon/JhonTorzo.fbx");
+
+	// Woman 1
+	Woman01BrazoDer = Model();
+	Woman01BrazoDer.LoadModel("Models/Woman01/BrazoDerecho.obj");
+	Woman01BrazoIzq = Model();
+	Woman01BrazoIzq.LoadModel("Models/Woman01/BrazoIzquierdo.obj");
+	Woman01PiernaDer = Model();
+	Woman01PiernaDer.LoadModel("Models/Woman01/PiernaDerecha.obj");
+	Woman01PiernaIzq = Model();
+	Woman01PiernaIzq.LoadModel("Models/Woman01/PiernaIzquierda.obj");
+	Woman01Torzo = Model();
+	Woman01Torzo.LoadModel("Models/Woman01/Torzo.obj");
 
 	std::vector<std::string> skyboxFacesNight;
 	skyboxFacesNight.push_back("Textures/Skybox/NightCityR.jpg");
@@ -524,9 +552,6 @@ while (!mainWindow.getShouldClose())
 	shaderList[0].SetSpotLights(spotLights, spotLightCount);
 	
 	/*******************************************/
-
-
-
 		glm::mat4 model(1.0);
 
 		model = glm::mat4(1.0);
@@ -542,9 +567,101 @@ while (!mainWindow.getShouldClose())
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Bar.RenderModel();
 
+		//////////////////////// WOMAN01 ///////////////////////////////////
+
+		
+		
+		printf("x:%f, y:%f, z%f\n", Woman1X, Woman1Y, Woman1Z);
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f + Woman1X, 0.0f + Woman1Y, 10.0f + Woman1Z));
+		model = glm::scale(model, glm::vec3(1.9f, 1.9f, 1.9f));
+		model = glm::rotate(model, rotateWoman01 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Woman01Torzo.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f + Woman1X, 0.0f + Woman1Y, 10.0f + Woman1Z));
+		model = glm::scale(model, glm::vec3(1.9f, 1.9f, 1.9f));
+		model = glm::rotate(model, rotateWoman01 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Woman01BrazoIzq.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f + Woman1X, 0.0f + +Woman1Y, 10.0f + Woman1Z));
+		model = glm::scale(model, glm::vec3(1.9f, 1.9f, 1.9f));
+		model = glm::rotate(model, rotateWoman01 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Woman01BrazoDer.RenderModel();
+
+		if (point1 == true) {
+			if (Woman1X >= 20) {
+				rotateWoman01 -= 10;
+				if (rotateWoman01 <= -90) {
+					point1 = false;
+				}
+			}
+			else {
+				Woman1X += 0.1;
+			}
+		}
+		else if (point1 == false) {
+			if (Woman1X <= 2) {
+				rotateWoman01 += 10;
+				if (rotateWoman01 >= 90) {
+					point1 = true;
+				}
+			}
+			else {
+				Woman1X -= 0.1;
+			}
+		}
+
+		
+		if (rotating == false) {
+			if (frontWoman == true) {
+				rotateWoman01LegL += 1;
+				rotateWoman01LegR -= 1;
+				moveLegR += 0.018;
+				moveLegL -= 0.018;
+				if (rotateWoman01LegL >= 15) {
+					frontWoman = false;
+				}
+			}
+			else if (frontWoman == false) {
+				rotateWoman01LegL -= 1;
+				rotateWoman01LegR += 1;
+				moveLegR -= 0.018;
+				moveLegL += 0.018;
+				if (rotateWoman01LegL <= -15) {
+					frontWoman = true;
+				}
+			}
+		}
+		
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f + Woman1X, 0.0f + Woman1Y, 10.0f + Woman1Z));
+		model = glm::scale(model, glm::vec3(1.9f, 1.9f, 1.9f));
+		model = glm::rotate(model, rotateWoman01 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, rotateWoman01LegL * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, moveLegL));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Woman01PiernaIzq.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f + Woman1X, 0.0f + Woman1Y, 10.0f + Woman1Z));
+		model = glm::scale(model, glm::vec3(1.9f, 1.9f, 1.9f));
+		model = glm::rotate(model, rotateWoman01 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, rotateWoman01LegR * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, moveLegR));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Woman01PiernaDer.RenderModel();
+		/////////////////////////////////////////////////////////////////
+
 		/**********************Jhon**********************/
 		/*===========Recorrido===========*/
-		printf("Piso; %f\n", pisoJhon);
+		//printf("Piso; %f\n", pisoJhon);
 		//Paredes Afuera//
 		//Enfrente
 		if (mainWindow.getMoveJhonZ() < 0.0f && mainWindow.getMoveJhonX() > -1.5f && mainWindow.getMoveJhonX() < 47.0f && mainWindow.getlastValueJhonZ() == 0.0f) {
@@ -881,6 +998,8 @@ while (!mainWindow.getShouldClose())
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		JhonTorzo.RenderModel();
+
+		//printf("//Direccionx:%f, y:%f, z:%f\n", mainWindow.getMoveJhonX(), mainWindow.getMoveJhonY(), mainWindow.getMoveJhonZ());
 		//****************************  PLANTA BAJA ********************************
 
 
@@ -1865,11 +1984,7 @@ while (!mainWindow.getShouldClose())
 
 
 
-//***************************** Estacinamiento ***********************************
-
-
-
-
+//***************************** Estacinamiento *********************************** 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(70.0f, 20.0f, -60.0f));
 		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
@@ -1934,34 +2049,44 @@ while (!mainWindow.getShouldClose())
 		Auto3.RenderModel();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 		//Personas
 
 		//woman
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(152.8f, -2.0f, -50.0f));
-		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(22.5f, 7.0f, -16.0f));
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Woman01.RenderModel();
 
 		//iroman
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(152.8f, -2.0f, -30.0f));
-		model = glm::scale(model, glm::vec3(-1.0f, -1.0f, -1.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::translate(model, glm::vec3(22.5f, 7.0f, -13.0f));
+		model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Iroman.RenderModel();
+
+		//woman2
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(9.5f, 7.0f, -8.0f));
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Woman01.RenderModel();
+
+		//iroman2
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(9.5f, 7.0f, -12.0f));
+		model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Iroman.RenderModel();
+
+		//iroman2
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.5f, 16.0f, -17.0f));
+		model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Iroman.RenderModel();
 

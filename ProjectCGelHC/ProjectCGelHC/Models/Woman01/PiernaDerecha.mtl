@@ -1,0 +1,35 @@
+# Blender MTL File: 'Woman.blend'
+# Material Count: 3
+
+newmtl Material13454
+Ns 575.999996
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\face.jpg
+
+newmtl Material13458
+Ns 575.999996
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\body.jpg
+
+newmtl Material13466
+Ns 575.999996
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\leg.jpg

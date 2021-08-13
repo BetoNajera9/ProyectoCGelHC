@@ -1,0 +1,113 @@
+# Blender MTL File: 'Woman.blend'
+# Material Count: 10
+
+newmtl Cotton_Oxford_FCL1PSC011_FRONT_4174
+Ns 258.869158
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\FCL1-PSC011-00_184556.png
+
+newmtl Material13385
+Ns 107.999959
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\hair.jpg
+
+newmtl Material13454
+Ns 575.999996
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\face.jpg
+
+newmtl Material13458
+Ns 575.999996
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\body.jpg
+
+newmtl Material13473
+Ns 900.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\eye.jpg
+
+newmtl Material13480
+Ns 900.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\eye.jpg
+
+newmtl Material13486
+Ns 107.999959
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\eyelash.jpg
+
+newmtl Material13493
+Ns 107.999959
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\eyelash.jpg
+
+newmtl Material13499
+Ns 107.999959
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\tooth.jpg
+
+newmtl Stretch_Denim_FCL1PSD003_FRONT_4181
+Ns 258.869158
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump -s 4.166138 4.166138 1.000000 D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\Texture_FCL1-PSD003-001_Stretch Denim_BLANK_NORMAL.png
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\FCL1-PSD003-01.png

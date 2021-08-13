@@ -1,0 +1,58 @@
+# Blender MTL File: 'Woman.blend'
+# Material Count: 5
+
+newmtl HEELSG1SG1
+Ns 143.999983
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\FV2_Open_Toe_Pump.jpg
+
+newmtl Material13458
+Ns 575.999996
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\body.jpg
+
+newmtl Material13466
+Ns 575.999996
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\leg.jpg
+
+newmtl W_Shoes_skinSG1SG1SG1
+Ns 143.999983
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\FV2_Open_Toe_Pump.jpg
+
+newmtl dummySG1SG1
+Ns 258.869158
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\transparency.png
+map_d D:\\BetoNajera\\Development\\ProyectoCGelHC\\Models\\Woman01\\source\\transparency.png
