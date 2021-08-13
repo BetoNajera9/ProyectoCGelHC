@@ -52,9 +52,9 @@ void Camera::keyControl(bool* keys, GLfloat deltaTime)
 		
 	}
 
-	if (position.y > ejeY || position.y < ejeY) {
-		position.y = ejeY;
-	}
+	//if (position.y > ejeY || position.y < ejeY) {
+	//	position.y = ejeY;
+	//}
 
 	if (keys[GLFW_KEY_SPACE]) {
 		lastActionSPACE = GL_TRUE;
