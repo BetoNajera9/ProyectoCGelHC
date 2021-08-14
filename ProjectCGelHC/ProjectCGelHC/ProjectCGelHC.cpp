@@ -32,6 +32,14 @@
 #include "PointLight.h"
 #include "Material.h"
 
+#include "Windows.h"
+
+//para el sonido
+//#include <irrklang/irrKlang.h>
+//using namespace irrklang;
+
+
+
 
 
 const float toRadians = 3.14159265f / 180.0f;
@@ -45,6 +53,10 @@ Camera camera;
 Texture brickTexture;
 Texture dirtTexture;
 Texture pisoTexture;
+Texture cuadro1;
+Texture cuadro2;
+Texture cuadro3;
+Texture cuadro4;
 
 //Models declaration
 Model Bar;
@@ -106,6 +118,9 @@ float moveLegL = 0.0f;
 float rotateWoman01LegR = 0.0f;
 float rotateWoman01LegL = 0.0f;
 float rotateWoman01 = 90.0f;
+
+//sonido
+bool sonido;
 
 //Tiempo
 float timeStart, timeEnd;
@@ -235,6 +250,22 @@ void CreateObjects()
 	obj4->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
 	meshList.push_back(obj4);
 
+
+	Mesh *obj5 = new Mesh();
+	obj5->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
+	meshList.push_back(obj5);
+
+
+
+
+	Mesh *obj6 = new Mesh();
+	obj6->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
+	meshList.push_back(obj6);
+
+
+	Mesh *obj7 = new Mesh();
+	obj7->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
+	meshList.push_back(obj7);
 }
 
 void CreateShaders()
@@ -245,6 +276,7 @@ void CreateShaders()
 }
 
 
+//ISoundEngine* SoundEngine = createIrrKlangDevice();
 
 int main()
 {
@@ -258,6 +290,19 @@ int main()
 
 	pisoTexture = Texture("Textures/piso.jpg");
 	pisoTexture.LoadTextureA();
+
+	cuadro1 = Texture("Textures/imagenes_Cuadros/imagen1.png");
+	cuadro1.LoadTextureA();
+
+	cuadro2 = Texture("Textures/imagenes_Cuadros/imagen2.png");
+	cuadro2.LoadTextureA();
+
+	cuadro3 = Texture("Textures/imagenes_Cuadros/imagen3.png");
+	cuadro3.LoadTextureA();
+
+	cuadro4 = Texture("Textures/imagenes_Cuadros/imagen6.png");
+	cuadro4.LoadTextureA();
+
 
 	// Models
 	Llanta_M = Model();
@@ -341,6 +386,9 @@ int main()
 	skyboxFacesDay.push_back("Textures/Skybox/DayCityF.jpg");
 	skyboxFacesDay.push_back("Textures/Skybox/DayCityB.jpg");
 
+
+	//sonido = PlaySound("Audio/MIX_Fiesta1.wav", NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
+
 	skybox = Skybox(skyboxFacesDay);
 
 
@@ -383,175 +431,182 @@ int main()
 	spotLightCount++;
 
 
-////Luz blanca
+	////Luz blanca
 
-spotLights[1] = SpotLight(1.0f, 1.0f, 1.0f, //color
-	0.8f, 0.8f,	//Intensidad
-	22.8f, 4.0f, -16.7f,	//posicion
-	//x     Y     Z
-	0.0f, -5.0f, 0.0f, //direccion
-	1.0f, 0.0f, 0.0f,
-	85.0f);
-spotLightCount++;
-
-
-
-//Luz Rosa
-spotLights[2] = SpotLight(1.0f, 0.0f, 1.0f, //color
-	0.8f, 0.8f,	//Intensidad
-	7.4f, 4.0f, -16.7f,	//posicion
-	//x     Y     Z
-	0.0f, -5.0f, 0.0f, //direccion
-	1.0f, 0.0f, 0.0f,
-	85.0f);
-spotLightCount++;
-
-//Luz Mesa Dj
-spotLights[3] = SpotLight(0.0f, 0.0f, 1.0f, //color
-	1.0f, 2.0f,	//Intensidad
-	41.5f, 110.0f, -15.8f,	//posicion
-	//x     Y     Z
-	0.0f, -5.0f, 0.0f, //direccion
-	1.0f, 0.0f, 0.0f,
-	2.0f);
-spotLightCount++;
+	spotLights[1] = SpotLight(1.0f, 1.0f, 1.0f, //color
+		0.8f, 0.8f,	//Intensidad
+		22.8f, 4.0f, -16.7f,	//posicion
+		//x     Y     Z
+		0.0f, -5.0f, 0.0f, //direccion
+		1.0f, 0.0f, 0.0f,
+		85.0f);
+	spotLightCount++;
 
 
-//Luz Estacionamientos
-spotLights[4] = SpotLight(1.0f, 1.0f, 1.0f, //color
-	0.5f, 0.5f,	//Intensidad
-	111.5f, 110.0f, -24.5f,	//posicion
-	//x     Y     Z
-	0.0f, -5.0f, 0.0f, //direccion
-	1.0f, 0.0f, 0.0f,
-	18.0f);
-spotLightCount++;
 
-GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
-uniformSpecularIntensity = 0, uniformShininess = 0;
-glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
+	//Luz Rosa
+	spotLights[2] = SpotLight(1.0f, 0.0f, 1.0f, //color
+		0.8f, 0.8f,	//Intensidad
+		7.4f, 4.0f, -16.7f,	//posicion
+		//x     Y     Z
+		0.0f, -5.0f, 0.0f, //direccion
+		1.0f, 0.0f, 0.0f,
+		85.0f);
+	spotLightCount++;
 
-timeStart = clock();
+	//Luz Mesa Dj
+	spotLights[3] = SpotLight(0.0f, 0.0f, 1.0f, //color
+		1.0f, 2.0f,	//Intensidad
+		41.5f, 110.0f, -15.8f,	//posicion
+		//x     Y     Z
+		0.0f, -5.0f, 0.0f, //direccion
+		1.0f, 0.0f, 0.0f,
+		2.0f);
+	spotLightCount++;
 
-////Loop mientras no se cierra la ventana
-while (!mainWindow.getShouldClose())
-{
-	GLfloat now = glfwGetTime();
-	deltaTime = now - lastTime;
-	deltaTime += (now - lastTime) / limitFPS;
-	lastTime = now;
 
-	//Recibir eventos del usuario
-	glfwPollEvents();
-	camera.keyControl(mainWindow.getsKeys(), deltaTime);
-	camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+	//Luz Estacionamientos
+	spotLights[4] = SpotLight(1.0f, 1.0f, 1.0f, //color
+		0.5f, 0.5f,	//Intensidad
+		111.5f, 110.0f, -24.5f,	//posicion
+		//x     Y     Z
+		0.0f, -5.0f, 0.0f, //direccion
+		1.0f, 0.0f, 0.0f,
+		18.0f);
+	spotLightCount++;
 
-	// Clear the window
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
-	shaderList[0].UseShader();
-	uniformModel = shaderList[0].GetModelLocation();
-	uniformProjection = shaderList[0].GetProjectionLocation();
-	uniformView = shaderList[0].GetViewLocation();
-	uniformEyePosition = shaderList[0].GetEyePositionLocation();
+	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
+		uniformSpecularIntensity = 0, uniformShininess = 0;
+	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
 
-	//información en el shader de intensidad especular y brillo
-	uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
-	uniformShininess = shaderList[0].GetShininessLocation();
+	timeStart = clock();
 
-	glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-	glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
-	glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
-	/*===================Camara======================*/
-	//printf("x:%f, y:%f, z:%f//", camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
-	//printf("//Direccionx:%f, y:%f, z:%f\n", camera.getCameraDirection().x, camera.getCameraDirection().y, camera.getCameraDirection().z);
-	/*===================+++++======================*/
+	////Loop mientras no se cierra la ventana
+	while (!mainWindow.getShouldClose())
+	{
+		GLfloat now = glfwGetTime();
+		deltaTime = now - lastTime;
+		deltaTime += (now - lastTime) / limitFPS;
+		lastTime = now;
 
-	/******************Tiempo******************/
-	timeEnd = clock();
-	if ( ((float)timeEnd - timeStart) / CLOCKS_PER_SEC > 60 ){
+		//Recibir eventos del usuario
+		glfwPollEvents();
+		camera.keyControl(mainWindow.getsKeys(), deltaTime);
+		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+
+		// Clear the window
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
+		shaderList[0].UseShader();
+		uniformModel = shaderList[0].GetModelLocation();
+		uniformProjection = shaderList[0].GetProjectionLocation();
+		uniformView = shaderList[0].GetViewLocation();
+		uniformEyePosition = shaderList[0].GetEyePositionLocation();
+
+		//información en el shader de intensidad especular y brillo
+		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
+		uniformShininess = shaderList[0].GetShininessLocation();
+
+		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
+		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		/*===================Camara======================*/
+		//printf("x:%f, y:%f, z:%f//", camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		//printf("//Direccionx:%f, y:%f, z:%f\n", camera.getCameraDirection().x, camera.getCameraDirection().y, camera.getCameraDirection().z);
+		/*===================+++++======================*/
+
+		//SoundEngine->play2D("Audio/MIX_Fiesta1.mp3", true);
+
+		/******************Tiempo******************/
+		timeEnd = clock();
+		if (((float)timeEnd - timeStart) / CLOCKS_PER_SEC > 60) {
+			if (Dia == true) {
+				Dia = false;
+			}
+			else if (Dia == false) {
+				Dia = true;
+			}
+			timeStart = clock();
+		}
+
 		if (Dia == true) {
-			Dia = false;
+			mainLight.SetIntensity(0.8);
+			skybox = Skybox(skyboxFacesDay);
 		}
-		else if(Dia == false) {
-			Dia = true;
+		else if (Dia == false) {
+			mainLight.SetIntensity(0.05);
+			skybox = Skybox(skyboxFacesNight);
 		}
-		timeStart = clock();
-	}
-	
-	if (Dia == true) {
-		mainLight.SetIntensity(0.8);
-		skybox = Skybox(skyboxFacesDay);
-	}
-	else if (Dia == false) {
-		mainLight.SetIntensity(0.05);
-		skybox = Skybox(skyboxFacesNight);
-	}
 
-	//Espectaculo de luces//
-	//Movimiento
-	if (Dia == true) {
-		pointLights[0].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
-		pointLights[1].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
-		spotLights[1].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
-		spotLights[2].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
-		spotLights[4].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
-	}
-	else if (Dia == false) {
-		i -= 0.05;
-		posXpink = 8 * cos(i);
-		posZpink = 8 * sin(i);
-		pointLights[0].SetPos(glm::vec3(15.0f + posXpink, 7.0f, -15.0f + posZpink));
+		//Espectaculo de luces//
+		//Movimiento
+		if (Dia == true) {
+			pointLights[0].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+			pointLights[1].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+			spotLights[1].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+			spotLights[2].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+			spotLights[4].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+		}
+		else if (Dia == false) {
+			i -= 0.05;
+			posXpink = 8 * cos(i);
+			posZpink = 8 * sin(i);
+			pointLights[0].SetPos(glm::vec3(15.0f + posXpink, 7.0f, -15.0f + posZpink));
 
-		posZblue = 8 * cos(i);
-		posXblue = 8 * sin(i);
-		pointLights[1].SetPos(glm::vec3(15.0f + posXblue, 7.0f, -15.0f + posZblue));
+			posZblue = 8 * cos(i);
+			posXblue = 8 * sin(i);
+			pointLights[1].SetPos(glm::vec3(15.0f + posXblue, 7.0f, -15.0f + posZblue));
 
-		//Color
-		if (up == true) {
-			j += 0.05;
-			if (j >= 1.0f) {
-				up = false;
+			//Color
+			if (up == true) {
+				j += 0.05;
+				if (j >= 1.0f) {
+					up = false;
+				}
 			}
-		}
-		else {
-			j -= 0.005;
-			if (j <= 0.0f) {
-				up = true;
+			else {
+				j -= 0.005;
+				if (j <= 0.0f) {
+					up = true;
+				}
 			}
+			pointLights[0].SetColor(glm::vec3(1.0f - j, 0.0f + j, 1.0f - j));
+			pointLights[1].SetColor(glm::vec3(0.0f + j, 1.0f - j, 1.0f - j));
+
+			//SpotLights
+			spotLights[1].SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			spotLights[2].SetColor(glm::vec3(1.0f, 0.0f, 1.0f));
+			spotLights[4].SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		}
-		pointLights[0].SetColor(glm::vec3(1.0f - j, 0.0f + j, 1.0f - j));
-		pointLights[1].SetColor(glm::vec3(0.0f + j, 1.0f - j, 1.0f - j));
 
-		//SpotLights
-		spotLights[1].SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		spotLights[2].SetColor(glm::vec3(1.0f, 0.0f, 1.0f));
-		spotLights[4].SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-	}
+		// Luz con teclas
+		//Luz Dj
+		if (mainWindow.getLuzDj() == GL_TRUE) {
+			spotLights[3].SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
+		}
+		else if (mainWindow.getLuzDj() == GL_FALSE) {
+			spotLights[3].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+		}
 
-	// Luz con teclas
-	//Luz Dj
-	if (mainWindow.getLuzDj() == GL_TRUE) {
-		spotLights[3].SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
-	}
-	else if (mainWindow.getLuzDj() == GL_FALSE) {
-		spotLights[3].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
-	}
+		//Luz Barra
+		if (mainWindow.getLuzBarra() == GL_TRUE) {
+			spotLights[0].SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
+		}
+		else if (mainWindow.getLuzBarra() == GL_FALSE) {
+			spotLights[0].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+		}
 
-	//Luz Barra
-	if (mainWindow.getLuzBarra() == GL_TRUE) {
-		spotLights[0].SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
-	}
-	else if (mainWindow.getLuzBarra() == GL_FALSE) {
-		spotLights[0].SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
-	}
+		shaderList[0].SetDirectionalLight(&mainLight);
+		shaderList[0].SetPointLights(pointLights, pointLightCount);
+		shaderList[0].SetSpotLights(spotLights, spotLightCount);
 
 	shaderList[0].SetDirectionalLight(&mainLight);
 	shaderList[0].SetPointLights(pointLights, pointLightCount);
 	shaderList[0].SetSpotLights(spotLights, spotLightCount);
 	
 	/*******************************************/
+
 		glm::mat4 model(1.0);
 
 		model = glm::mat4(1.0);
@@ -560,6 +615,41 @@ while (!mainWindow.getShouldClose())
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pisoTexture.UseTexture();
 		meshList[2]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(4.5f, 12.5f, -25.6f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro1.UseTexture();
+		meshList[3]->RenderMesh();
+
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(17.0f, 12.5f, -25.6f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro2.UseTexture();
+		meshList[4]->RenderMesh();
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(13.0f, 12.5f, -2.6f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro3.UseTexture();
+		meshList[5]->RenderMesh();
+
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(2.0f, 3.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro4.UseTexture();
+		meshList[6]->RenderMesh();
+
+
+
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
@@ -727,7 +817,7 @@ while (!mainWindow.getShouldClose())
 					mainWindow.setMoveJhonY(9.2f);
 					pisoJhon = 1.0f;
 				}
-				
+
 			}
 			// Bajar
 			else if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && mainWindow.getMoveJhonZ() == -23 && mainWindow.getlastValueJhonZ() < mainWindow.getMoveJhonZ() && pisoJhon == 1.0f) {
@@ -735,7 +825,7 @@ while (!mainWindow.getShouldClose())
 				mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() - 0.14f);
 			}
 			// Paredes del corredor
-			if(mainWindow.getMoveJhonX() > -2.0f && mainWindow.getlastValueJhonX() == -2.0f && (pisoJhon == 0.5 || pisoJhon == 0.0f)){
+			if (mainWindow.getMoveJhonX() > -2.0f && mainWindow.getlastValueJhonX() == -2.0f && (pisoJhon == 0.5 || pisoJhon == 0.0f)) {
 				mainWindow.setMoveJhonX(-2.0f);
 
 			}
@@ -763,7 +853,7 @@ while (!mainWindow.getShouldClose())
 			if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= 0.0f && mainWindow.getMoveJhonZ() > -6.0f && pisoJhon == 1.0f) {
 				pisoJhon = 1.5f;
 			}
-			if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && mainWindow.getMoveJhonZ() <= -6.0f && pisoJhon == 1.5f ) {
+			if (mainWindow.getMoveJhonX() >= -5.0f && mainWindow.getMoveJhonX() <= -2.0f && mainWindow.getMoveJhonZ() <= -6.0f && pisoJhon == 1.5f) {
 				pisoJhon = 1.5f;
 				//Pared escaleras
 				if (mainWindow.getMoveJhonX() > -2.0f &&  mainWindow.getlastValueJhonX() == -2.0f && mainWindow.getMoveJhonZ() < -6.0f && mainWindow.getMoveJhonZ() > -28.0f) {
@@ -784,7 +874,7 @@ while (!mainWindow.getShouldClose())
 						mainWindow.setMoveJhonX(-2.0f);
 					}
 				}
-				
+
 				// Escaleras principales
 				if (mainWindow.getMoveJhonZ() <= -6.0f && mainWindow.getMoveJhonZ() >= -28.0f && pisoJhon == 1.5f) {
 					if (mainWindow.getlastValueJhonZ() > mainWindow.getMoveJhonZ() && mainWindow.getWalking() == GL_TRUE) {
@@ -796,7 +886,7 @@ while (!mainWindow.getShouldClose())
 						mainWindow.setMoveJhonY(mainWindow.getMoveJhonY() - 0.3f);
 					}
 				}
-				else if(mainWindow.getMoveJhonZ() <= -28.0f && pisoJhon == 1.5 && pisoJhon == 1.5f){
+				else if (mainWindow.getMoveJhonZ() <= -28.0f && pisoJhon == 1.5 && pisoJhon == 1.5f) {
 					mainWindow.setMoveJhonY(18.0f);
 					pisoJhon = 2;
 				}
@@ -879,7 +969,7 @@ while (!mainWindow.getShouldClose())
 					mainWindow.setMoveJhonX(-5.0f);
 				}
 			}
-			
+
 		}
 		else {
 			mainWindow.setMoveJhonY(0.0f);
@@ -913,9 +1003,9 @@ while (!mainWindow.getShouldClose())
 				rotateJhonArmL -= 0.5;
 			}
 		}*/
-		
+
 		model = glm::mat4(1.0);
-		
+
 		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX() + JhonX, 0.3f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ() + JhonZ));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -926,7 +1016,7 @@ while (!mainWindow.getShouldClose())
 		JhonBrazoDer.RenderModel();
 
 		model = glm::mat4(1.0);
-		
+
 		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX() + JhonX, 0.3f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ() + JhonZ));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -969,9 +1059,9 @@ while (!mainWindow.getShouldClose())
 				rotateJhonLegL -= 10;
 			}
 		}
-		
+
 		model = glm::mat4(1.0);
-		
+
 		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX() + JhonX, 0.1f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ() + JhonZ));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -981,7 +1071,7 @@ while (!mainWindow.getShouldClose())
 		JhonPiernaDer.RenderModel();
 
 		model = glm::mat4(1.0);
-		
+
 		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX() + JhonX, 0.1f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ() + JhonZ));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -991,7 +1081,7 @@ while (!mainWindow.getShouldClose())
 		JhonPiernaIzq.RenderModel();
 
 		model = glm::mat4(1.0);
-		
+
 		model = glm::translate(model, glm::vec3(0.0f + mainWindow.getMoveJhonX() + JhonX, 0.0f + mainWindow.getMoveJhonY(), 0.0f + mainWindow.getMoveJhonZ() + JhonZ));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, mainWindow.getRotateJhonZ() * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -1086,10 +1176,10 @@ while (!mainWindow.getShouldClose())
 
 
 
-										//BAÑOS MUJERES
+		//BAÑOS MUJERES
 
 
-		//Lavabo1
+//Lavabo1
 		model = glm::mat4(1.0);
 		model = glm::scale(model, glm::vec3(0.7f, 0.7f, 0.7f));
 		model = glm::translate(model, glm::vec3(21.8f, -2.8f, -8.0f));
@@ -1373,8 +1463,8 @@ while (!mainWindow.getShouldClose())
 
 		//Barra
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(14.5f, 4.5f, -3.5f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+		model = glm::translate(model, glm::vec3(10.5f, 3.5f, -3.2f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Barra.RenderModel();
@@ -1416,21 +1506,21 @@ while (!mainWindow.getShouldClose())
 
 		//Conjunto de Mesa 1
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(7.5f, 5.4f, -3.2f));
+		model = glm::scale(model, glm::vec3(2.6f, 2.6f, 2.6f));
+		model = glm::translate(model, glm::vec3(2.5f, 2.64f, -1.8f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 		//sillas
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(7.1f, 4.7f, -2.5f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(3.0f, 2.6f, -1.6f));
 		model = glm::rotate(model, -170 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(6.0f, 4.7f, -2.5f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(2.0f, 2.6f, -1.6f));
 		model = glm::rotate(model, 85 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
@@ -1441,21 +1531,21 @@ while (!mainWindow.getShouldClose())
 
 		//Conjunto de Mesa 2
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(11.5f, 5.4f, -7.4f));
+		model = glm::scale(model, glm::vec3(2.6f, 2.6f, 2.6f));
+		model = glm::translate(model, glm::vec3(6.0f, 2.64f, -3.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 		//sillas
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(10.5f, 4.7f, -6.1f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(6.0f, 2.6f, -3.1f));
 		model = glm::rotate(model, -170 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(9.5f, 4.7f, -6.1f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(4.8f, 2.6f, -3.1f));
 		model = glm::rotate(model, 85 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
@@ -1465,21 +1555,21 @@ while (!mainWindow.getShouldClose())
 
 		//Conjunto de Mesa 3
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(17.5f, 5.4f, -7.4f));
+		model = glm::scale(model, glm::vec3(2.6f, 2.6f, 2.6f));
+		model = glm::translate(model, glm::vec3(8.8f, 2.64f, -3.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 		//sillas
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(15.7f, 4.7f, -6.1f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(8.5f, 2.6f, -3.1f));
 		model = glm::rotate(model, -170 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(14.6f, 4.7f, -6.1f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(7.7f, 2.6f, -3.1f));
 		model = glm::rotate(model, 85 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
@@ -1488,21 +1578,21 @@ while (!mainWindow.getShouldClose())
 
 		//Conjunto de Mesa 4
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(24.5f, 5.4f, -3.2f));
+		model = glm::scale(model, glm::vec3(2.6f, 2.6f, 2.6f));
+		model = glm::translate(model, glm::vec3(11.8f, 2.64f, -1.8f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 		//sillas
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(21.5f, 4.7f, -2.5f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(11.5f, 2.6f, -1.6f));
 		model = glm::rotate(model, -170 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(20.6f, 4.7f, -2.5f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(10.5f, 2.6f, -1.6f));
 		model = glm::rotate(model, 85 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
@@ -1514,21 +1604,21 @@ while (!mainWindow.getShouldClose())
 
 		//Conjunto de Mesa 5
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(27.5f, 5.4f, -7.4f));
+		model = glm::scale(model, glm::vec3(2.6f, 2.6f, 2.6f));
+		model = glm::translate(model, glm::vec3(13.8f, 2.64f, -3.8f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 		//sillas
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(24.5f, 4.7f, -6.1f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(13.2f, 2.6f, -3.1f));
 		model = glm::rotate(model, -170 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(23.2f, 4.7f, -6.1f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(12.4f, 2.6f, -3.1f));
 		model = glm::rotate(model, 85 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
@@ -1539,21 +1629,21 @@ while (!mainWindow.getShouldClose())
 
 		//Conjunto de Mesa 6
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(27.5f, 5.4f, -17.0f));
+		model = glm::scale(model, glm::vec3(2.6f, 2.6f, 2.6f));
+		model = glm::translate(model, glm::vec3(13.8f, 2.64f, -8.4f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 		//sillas
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(24.5f, 4.7f, -14.8f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(13.2f, 2.6f, -7.8f));
 		model = glm::rotate(model, -110 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(23.2f, 4.7f, -14.8f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(12.4f, 2.6f, -7.8f));
 		model = glm::rotate(model, 50 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
@@ -1561,21 +1651,21 @@ while (!mainWindow.getShouldClose())
 
 		//Conjunto de Mesa 7
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(17.5f, 5.4f, -17.0f));
+		model = glm::scale(model, glm::vec3(2.6f, 2.6f, 2.6f));
+		model = glm::translate(model, glm::vec3(8.8f, 2.64f, -8.4f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 		//sillas
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(15.7f, 4.7f, -14.8f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(8.5f, 2.6f, -7.8f));
 		model = glm::rotate(model, -110 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(14.6f, 4.7f, -14.8f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(7.7f, 2.6f, -7.8f));
 		model = glm::rotate(model, 50 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
@@ -1585,21 +1675,21 @@ while (!mainWindow.getShouldClose())
 
 		//Conjunto de Mesa 8
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(11.5f, 5.4f, -17.0f));
+		model = glm::scale(model, glm::vec3(2.6f, 2.6f, 2.6f));
+		model = glm::translate(model, glm::vec3(6.0f, 2.64f, -8.4f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 		//sillas
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(10.5f, 4.7f, -14.8f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(6.0f, 2.6f, -7.8f));
 		model = glm::rotate(model, -110 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(9.5f, 4.7f, -14.8f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(4.8f, 2.6f, -7.8f));
 		model = glm::rotate(model, 50 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
@@ -1841,21 +1931,21 @@ while (!mainWindow.getShouldClose())
 
 		//Conjunto de Mesa 1
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(1.7f, 12.5f, -3.2f));
+		model = glm::scale(model, glm::vec3(2.6f, 2.6f, 2.6f));
+		model = glm::translate(model, glm::vec3(1.7f, 6.3f, -1.8f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 		//sillas
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(2.1f, 10.9f, -2.5f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(2.1f, 5.9f, -1.5f));
 		model = glm::rotate(model, -170 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(1.0f, 10.9f, -2.5f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(1.0f, 5.9f, -1.5f));
 		model = glm::rotate(model, 85 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
@@ -1864,21 +1954,21 @@ while (!mainWindow.getShouldClose())
 
 		//Conjunto de Mesa 2
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(7.5f, 12.3f, -3.2f));
+		model = glm::scale(model, glm::vec3(2.6f, 2.6f, 2.6f));
+		model = glm::translate(model, glm::vec3(4.1f, 6.3f, -1.8f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 		//sillas
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(7.1f, 10.7f, -2.5f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(4.2f, 5.9f, -1.5f));
 		model = glm::rotate(model, -170 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(6.0f, 10.7f, -2.5f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(3.4f, 5.9f, -1.5f));
 		model = glm::rotate(model, 85 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
@@ -1887,79 +1977,25 @@ while (!mainWindow.getShouldClose())
 
 		//Conjunto de Mesa 3
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(24.3f, 12.3f, -3.2f));
+		model = glm::scale(model, glm::vec3(2.6f, 2.6f, 2.6f));
+		model = glm::translate(model, glm::vec3(12.1f, 6.3f, -1.8f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Mesa.RenderModel();
 		//sillas
-		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(21.5f, 10.7f, -2.5f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(25.5f, 5.9f, -1.5f));
 		model = glm::rotate(model, -170 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(20.6f, 10.7f, -2.5f));
+		model = glm::scale(model, glm::vec3(2.8f, 2.8f, 2.8f));
+		model = glm::translate(model, glm::vec3(10.6f, 5.9f, -1.5f));
 		model = glm::rotate(model, 85 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
-
-
-
-		//Conjunto de Mesa 4
-		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(17.5f, 12.3f, -22.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa.RenderModel();
-		//sillas
-		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(15.7f, 10.7f, -19.8f));
-		model = glm::rotate(model, -110 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Silla.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(14.6f, 10.7f, -19.8f));
-		model = glm::rotate(model, 50 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Silla.RenderModel();
-
-
-
-
-
-		//Conjunto de Mesa 5
-		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-		model = glm::translate(model, glm::vec3(11.7f, 12.3f, -22.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa.RenderModel();
-		//sillas
-		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(10.7f, 10.7f, -19.8f));
-		model = glm::rotate(model, -110 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Silla.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
-		model = glm::translate(model, glm::vec3(9.6f, 10.7f, -19.8f));
-		model = glm::rotate(model, 50 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Silla.RenderModel();
-
-
-
-
-
-
+		//***************************** Estacinamiento ***********************************
 
 		//Conjunto de Mesa 6
 		model = glm::mat4(1.0);
@@ -1982,9 +2018,6 @@ while (!mainWindow.getShouldClose())
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Silla.RenderModel();
 
-
-
-//***************************** Estacinamiento *********************************** 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(70.0f, 20.0f, -60.0f));
 		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
@@ -1995,7 +2028,7 @@ while (!mainWindow.getShouldClose())
 
 
 
-        //Carro 1.
+		//Carro 1.
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(139.0f, 0.2f, -10.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
@@ -2049,7 +2082,7 @@ while (!mainWindow.getShouldClose())
 		Auto3.RenderModel();
 
 
-		//Personas
+		/////////////////////////////////////Personas
 
 		//woman
 		model = glm::mat4(1.0);
